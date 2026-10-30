@@ -219,6 +219,67 @@ button{cursor:pointer;touch-action:manipulation}
 .toast button{border:0;border-radius:12px;background:#FFFDF9;color:#4A4540;padding:0 12px;min-height:38px;font-size:14px;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
 .toast button.alt{background:#6B635B;color:#FFFDF9}
 .warn-banner{background:var(--red-bg);color:var(--red);border-radius:16px;padding:10px 14px;font-size:14px;margin:0 0 14px}
+
+/* ---------- v1.1：分類篩選、提示行、緊急備品 ---------- */
+.cat-chips{display:flex;gap:8px;margin:0 0 10px;overflow-x:auto;padding:2px 2px 4px;scrollbar-width:none}
+.cat-chips::-webkit-scrollbar{display:none}
+.cchip{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:var(--card);border-radius:99px;padding:5px 14px 5px 8px;font-size:15px;white-space:nowrap;min-height:40px}
+.cchip.all{padding-left:14px}
+.cchip.on{border-color:var(--ink);background:#EFE8DC}
+.chip.c-exp{background:#EDE6F0;color:#6B557A}
+.note-line{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--ink2);margin-top:8px;line-height:1.35}
+.note-line .ic{width:16px;height:16px}
+.note-line.warn{color:var(--yellow)}
+.note-line.bad{color:var(--red)}
+.note-line.mut{color:var(--muted)}
+.note-line b{font-weight:400;text-decoration:underline;text-underline-offset:3px}
+.em-line{display:inline-flex;align-items:center;gap:6px;margin-top:10px;border-radius:99px;padding:4px 12px 4px 8px;font-size:14px}
+.em-line .ic{width:16px;height:16px}
+.em-line.p-green{background:var(--green-bg);color:var(--green)}
+.em-line.p-yellow{background:var(--yellow-bg);color:var(--yellow)}
+.em-line.p-red{background:var(--red-bg);color:var(--red)}
+.em-count{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;margin-top:12px;color:var(--ink2);font-size:15px;cursor:pointer}
+.em-count b{font-size:30px;font-weight:400;color:var(--ink);line-height:1}
+.b-transfer{background:#E4E9F1;color:#4F6380}
+.b-sos{background:#F6E3DA;color:#97573E}
+.batch-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.bchip{font-size:13px;border-radius:99px;padding:3px 10px;background:var(--soft);color:var(--ink2)}
+.bchip.warn{background:var(--yellow-bg);color:var(--yellow)}
+.bchip.bad{background:var(--red-bg);color:var(--red)}
+.b-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.b-row:first-of-type{border-top:0}
+.b-row .grow{flex:1;min-width:0}
+.b-row b{font-weight:400;font-size:16px}
+.b-row small{display:block;font-size:13px;color:var(--ink2)}
+.b-row small.warn{color:var(--yellow)}
+.b-row small.bad{color:var(--red)}
+.b-row small.mut{color:var(--muted)}
+.check-banner{display:flex;align-items:center;gap:12px;border-radius:var(--radius);padding:14px 16px;margin:0 0 16px;background:var(--card);box-shadow:var(--shadow)}
+.check-banner.due{background:#FBEDE8}
+.check-banner .grow{flex:1;min-width:0;font-size:14px;color:var(--ink2)}
+.check-banner .grow b{display:block;font-weight:400;font-size:17px;color:var(--ink)}
+.check-banner.due .grow b{color:var(--red)}
+.sec-title{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:400;margin:22px 4px 10px}
+.toggle-row{display:flex;align-items:flex-start;gap:10px;border:1.5px solid var(--line);background:var(--card);border-radius:var(--radius-sm);padding:14px;cursor:pointer;margin:0 0 10px}
+.toggle-row:has(input:checked){border-color:var(--primary);background:#EEF2EC}
+.toggle-row input{width:20px;height:20px;accent-color:var(--primary);margin-top:2px;flex:0 0 auto}
+.toggle-row b{font-weight:400;font-size:16px;display:block}
+.toggle-row small{color:var(--ink2);font-size:13px}
+.sub-box{border-left:3px solid var(--line);padding:4px 0 0 14px;margin:0 0 18px}
+.form.no-daily .only-daily,.form:not(.em-on) .only-em{display:none}
+.form:not(.ao-on) .only-ao{display:none}
+.row2{display:flex;gap:8px}
+.row2 .input{flex:1}
+.row2 select.input{flex:0 0 110px}
+.seg{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap}
+.seg button{flex:1;min-height:44px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);font-size:15px;white-space:nowrap;padding:0 10px}
+.seg button.on{border-color:var(--primary);background:#EEF2EC}
+.date-list{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;margin:0 0 12px}
+.date-list span{color:var(--ink2);font-size:14px}
+.input[type=date]{min-height:48px;-webkit-appearance:none;appearance:none}
+.ck-item{margin:0 0 12px}
+.ck-item.done{opacity:.6}
+.ck-toggle{display:flex;align-items:center;gap:8px;margin-top:10px}
 </style>
 </head>
 <body>
@@ -231,6 +292,7 @@ button{cursor:pointer;touch-action:manipulation}
   <button class="tab" data-act="nav" data-id="#/"><span class="tab-ic" data-ic="home"></span>首頁</button>
   <button class="tab" data-act="nav" data-id="#/buy"><span class="tab-ic" data-ic="cart"></span>待買<span class="badge" id="buy-badge" hidden></span></button>
   <button class="tab tab-add" data-act="nav" data-id="#/new"><span class="tab-ic" data-ic="plus"></span>新增</button>
+  <button class="tab" data-act="nav" data-id="#/emergency"><span class="tab-ic" data-ic="sos"></span>緊急<span class="badge" id="em-badge" hidden></span></button>
   <button class="tab" data-act="nav" data-id="#/settings"><span class="tab-ic" data-ic="settings"></span>設定</button>
 </nav>
 
@@ -242,7 +304,7 @@ button{cursor:pointer;touch-action:manipulation}
 
 <script>
 'use strict';
-var APP_VERSION = 'v1.0';
+var APP_VERSION = 'v1.1';
 var STORE_KEY = 'pantry.v1';
 var DAY = 86400000;
 
@@ -262,6 +324,22 @@ function fmtNum(x){
   return String(Math.round(x * 100) / 100);
 }
 function fmtDays(x){ return x < 1 ? '不到 1' : fmtNum(x); }
+// 日期字串 YYYY-MM-DD（效期用，只到「日」）
+function ymd(t){ var d = new Date(t); return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+function parseYmd(s){ var p = String(s).split('-'); return new Date(+p[0], +p[1] - 1, +p[2]).getTime(); }
+function validYmd(s){ return /^\d{4}-\d{2}-\d{2}$/.test(s || '') && !isNaN(parseYmd(s)); }
+function daysUntil(t){ return Math.round((dayStart(t) - dayStart(now())) / DAY); }
+function daysLeft(s){ return daysUntil(parseYmd(s)); }
+function fmtYmd(s){ var p = s.split('-'); return (+p[0] !== new Date(now()).getFullYear() ? +p[0] + '/' : '') + (+p[1]) + '/' + (+p[2]); }
+function fmtT(t){ return fmtYmd(ymd(t)); }
+// 加月份照日曆算；1/31 + 1 個月 = 2/28（或 2/29）
+function addMonths(t, n){
+  var d = new Date(t), day = d.getDate();
+  d.setDate(1); d.setMonth(d.getMonth() + n);
+  d.setDate(Math.min(day, new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate()));
+  return d.getTime();
+}
+function leftText(n){ return n < 0 ? '已過 ' + (-n) + ' 天' : n === 0 ? '就是今天' : '剩 ' + n + ' 天'; }
 
 /* ================= 圖示（狀態與操作） ================= */
 var ICONS = {
@@ -290,7 +368,13 @@ var ICONS = {
   up: '<path d="M6 15l6-6 6 6"/>',
   down: '<path d="M6 9l6 6 6-6"/>',
   list: '<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>',
-  create: '<path d="M12 3l1.8 4.6L18.5 9l-4.7 1.4L12 15l-1.8-4.6L5.5 9l4.7-1.4z"/><path d="M18 16l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>'
+  create: '<path d="M12 3l1.8 4.6L18.5 9l-4.7 1.4L12 15l-1.8-4.6L5.5 9l4.7-1.4z"/><path d="M18 16l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
+  sos: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.4"/><path d="M6 6l3.6 3.6M18 6l-3.6 3.6M6 18l3.6-3.6M18 18l-3.6-3.6"/>',
+  cal: '<rect x="4" y="5.5" width="16" height="15" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/>',
+  pkg: '<path d="M4 7.5L12 4l8 3.5v9L12 20l-8-3.5z"/><path d="M4 7.5l8 3.5 8-3.5M12 11v9"/>',
+  bell: '<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
+  move: '<path d="M4 12h12"/><path d="M12 7l5 5-5 5"/><path d="M20 5v14"/>',
+  box: '<rect x="4" y="7" width="16" height="13" rx="2"/><path d="M3 4h18v3H3zM10 11h4"/>'
 };
 function ic(name, cls){
   return '<svg class="ic ' + (cls || '') + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICONS[name] || '') + '</svg>';
@@ -345,7 +429,11 @@ var ARTS = {
     '<path d="M17 30h30l-3.6 23a4 4 0 0 1-4 3.4H24.6a4 4 0 0 1-4-3.4z" fill="#D9B79F"/>' + face(32, 42, 6) },
   box: { label: '紙箱', svg:
     '<rect x="10" y="22" width="44" height="34" rx="8" fill="#E4CFAF"/><rect x="8" y="16" width="48" height="10" rx="5" fill="#D5BC97"/>' +
-    '<rect x="28" y="16" width="8" height="13" rx="2" fill="#F2E6D3"/>' + face(32, 42) }
+    '<rect x="28" y="16" width="8" height="13" rx="2" fill="#F2E6D3"/>' + face(32, 42) },
+  kit: { label: '防災包', svg:
+    '<path d="M24 14v-3a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v3" fill="none" stroke="#C98F7B" stroke-width="3"/>' +
+    '<rect x="11" y="13" width="42" height="44" rx="12" fill="#E9B9A6"/><rect x="18" y="38" width="28" height="12" rx="4" fill="#DDA08B"/>' +
+    '<path d="M30 18h4v3.5h3.5v4H34V29h-4v-3.5h-3.5v-4H30z" fill="#fff"/>' + face(32, 34, 6) }
 };
 var TINTS = { sage:'#E4ECDF', blue:'#DEE7EF', mauve:'#EFE3EB', peach:'#F7E6D9', sand:'#F0E8D8', lavender:'#E7E3F1', mint:'#DDEDE7', rose:'#F5E2E0' };
 function artSvg(key, size){
@@ -378,22 +466,27 @@ var db = null;
 
 function freshDb(){
   return {
-    version: 1,
+    version: 2,
     categories: [
       { id: 'c_kitchen', name: '廚房用品', art: 'kitchen', color: 'peach', order: 0 },
       { id: 'c_bath', name: '洗沐用品', art: 'bath', color: 'blue', order: 1 },
       { id: 'c_clean', name: '清潔用品', art: 'clean', color: 'mauve', order: 2 }
     ],
     items: [],
-    logs: []
+    logs: [],
+    checks: [],
+    settings: { warnDays: 30, checkMonths: 6, lastCheckAt: null }
   };
 }
 function normalizeDb(d){
   if (!d || typeof d !== 'object') return freshDb();
-  d.version = 1;
+  d.version = 2;
   d.categories = Array.isArray(d.categories) ? d.categories : [];
   d.items = Array.isArray(d.items) ? d.items : [];
   d.logs = Array.isArray(d.logs) ? d.logs : [];
+  d.checks = Array.isArray(d.checks) ? d.checks : [];
+  var s = d.settings && typeof d.settings === 'object' ? d.settings : {};
+  d.settings = { warnDays: Math.max(0, toInt(s.warnDays, 30)), checkMonths: Math.max(1, toInt(s.checkMonths, 6)), lastCheckAt: s.lastCheckAt || null };
   d.items.forEach(function(it){
     it.mode = it.mode === 'stock' ? 'stock' : 'count';
     it.quantity = Math.max(0, toInt(it.quantity, 0));
@@ -403,6 +496,26 @@ function normalizeDb(d){
     it.unit = it.unit || '個';
     it.location = it.location || '';
     it.archived = !!it.archived;
+    it.daily = it.daily !== false;
+    var em = it.emergency && typeof it.emergency === 'object' ? it.emergency : {};
+    it.emergency = { enabled: !!em.enabled, target: Math.max(0, toInt(em.target, 0)), redLine: Math.max(0, toInt(em.redLine, 0)) };
+    if (!it.daily && !it.emergency.enabled) it.daily = true;
+    var ao = it.afterOpen;
+    it.afterOpen = ao && (ao.kind === 'label' || ao.kind === 'personal') && toInt(ao.n, 0) > 0 ? { kind: ao.kind, n: toInt(ao.n, 0), unit: ao.unit === 'month' ? 'month' : 'day' } : null;
+    it.warnDays = it.warnDays == null || it.warnDays === '' ? null : Math.max(0, toInt(it.warnDays, 0));
+    it.batches = (Array.isArray(it.batches) ? it.batches : []).filter(function(b){ return b && toInt(b.qty, 0) > 0; }).map(function(b){
+      return { id: b.id || uid(), pool: b.pool === 'emergency' ? 'emergency' : 'daily', qty: toInt(b.qty, 0), exp: validYmd(b.exp) ? b.exp : null, addedAt: b.addedAt || it.createdAt || now() };
+    });
+    if (it.inUse && !it.openedAt){
+      var last = null;
+      d.logs.forEach(function(l){ if (l.itemId === it.id && l.action === 'open') last = l.at; });
+      it.openedAt = last;
+    }
+    if (!it.inUse){ it.openedAt = null; it.openedExp = null; }
+    it.openedExp = validYmd(it.openedExp) ? it.openedExp : null;
+    // 舊資料：日常批次的總數要等於日常數量，不夠的補成「未標效期」
+    var t = { it: it, bch: [], patch: {} };
+    syncPool(t, 'daily', it.daily ? level(it) : 0);
   });
   return d;
 }
@@ -414,17 +527,85 @@ function sortedCats(){ return db.categories.slice().sort(function(a, b){ return 
 function activeItems(){ return db.items.filter(function(it){ return !it.archived; }); }
 function itemLogs(id){ return db.logs.filter(function(l){ return l.itemId === id; }).sort(function(a, b){ return a.at - b.at; }); }
 
+/* ================= 批次（效期） =================
+ * 每個物品的 batches：{ pool: 日常 daily／緊急 emergency, qty, exp: 'YYYY-MM-DD' 或 null }
+ * 日常批次總數 = 簡單計數的數量，或使用中／備品的「未開封備品」數；開封中那包的效期另存在 openedExp
+ * 緊急數量 = 緊急批次總數（沒有另外存數字）
+ * 扣的時候一律先扣最早到期的；沒標效期的排最後 */
+function byExp(a, b){
+  if (a.exp === b.exp) return a.addedAt - b.addedAt;
+  if (!a.exp) return 1;
+  if (!b.exp) return -1;
+  return a.exp < b.exp ? -1 : 1;
+}
+function batchesOf(it, pool){ return (it.batches || []).filter(function(b){ return b.pool === pool; }).sort(byExp); }
+function poolSum(it, pool){ return (it.batches || []).reduce(function(s, b){ return s + (b.pool === pool ? b.qty : 0); }, 0); }
+function begin(it){ if (!it.batches) it.batches = []; return { it: it, bch: [], patch: {} }; }
+function bChange(t, b, d){
+  b.qty += d;
+  t.bch.push({ id: b.id, pool: b.pool, exp: b.exp, addedAt: b.addedAt, d: d });
+  if (b.qty <= 0) t.it.batches = t.it.batches.filter(function(x){ return x !== b; });
+}
+function bAdd(t, pool, qty, exp){
+  if (!(qty > 0)) return;
+  exp = validYmd(exp) ? exp : null;
+  var b = null;
+  t.it.batches.forEach(function(x){ if (x.pool === pool && x.exp === exp) b = x; });
+  if (!b){ b = { id: uid(), pool: pool, qty: 0, exp: exp, addedAt: now() }; t.it.batches.push(b); }
+  bChange(t, b, qty);
+}
+function bTake(t, pool, n){
+  var taken = [];
+  batchesOf(t.it, pool).forEach(function(b){
+    if (n <= 0) return;
+    var k = Math.min(n, b.qty);
+    taken.push({ exp: b.exp, qty: k });
+    bChange(t, b, -k);
+    n -= k;
+  });
+  return taken;
+}
+function syncPool(t, pool, target){
+  var diff = target - poolSum(t.it, pool);
+  if (diff > 0) bAdd(t, pool, diff, null);
+  else if (diff < 0) bTake(t, pool, -diff);
+}
+function setF(t, k, v){
+  if (!(k in t.patch)) t.patch[k] = [t.it[k] == null ? null : t.it[k], v];
+  else t.patch[k][1] = v;
+  t.it[k] = v;
+}
+function warnDaysOf(it){ return it.warnDays != null ? it.warnDays : db.settings.warnDays; }
+// 一組批次的效期狀況
+function expInfo(list, warn){
+  var r = { expired: 0, soon: 0, undated: 0, total: 0, first: null, firstSoon: null };
+  list.forEach(function(b){
+    r.total += b.qty;
+    if (!b.exp){ r.undated += b.qty; return; }
+    var n = daysLeft(b.exp);
+    if (n < 0) r.expired += b.qty;
+    else if (n <= warn){ r.soon += b.qty; if (!r.firstSoon) r.firstSoon = b; }
+    if (!r.first) r.first = b;
+  });
+  return r;
+}
+function expClass(exp, warn){ if (!exp) return 'mut'; var n = daysLeft(exp); return n < 0 ? 'bad' : n <= warn ? 'warn' : ''; }
+function expText(exp){ if (!exp) return '未標效期'; var n = daysLeft(exp); return fmtYmd(exp) + ' 到期 · ' + (n < 0 ? '已過期 ' + (-n) + ' 天' : n === 0 ? '今天到期' : '剩 ' + n + ' 天'); }
+
 /* ================= 狀態（紅黃綠燈） =================
- * 數量 = 簡單計數的「目前數量」，或使用中／備品的「備品數」
- * 🔴 數量 ≤ 紅線 → 在待買清單
- * 🟡 數量 = 紅線 + 1
- * 🟢 數量 ≥ 紅線 + 2 */
+ * 日常：數量 = 簡單計數的「目前數量」，或使用中／備品的「備品數」
+ *   🔴 數量 ≤ 紅線 → 待買　🟡 數量 = 紅線 + 1　🟢 數量 ≥ 紅線 + 2
+ * 緊急：有效數量 = 還沒過期的 + 沒標效期的
+ *   🟢 有效 ≥ 目標　🟡 紅線 < 有效 < 目標　🔴 有效 ≤ 紅線 */
 var MODE_LABEL = { count: '簡單計數', stock: '使用中／備品' };
 var STATUS = {
   red:    { label: '待買',   rank: 0 },
   yellow: { label: '快用完', rank: 1 },
   green:  { label: '充足',   rank: 2 }
 };
+var EM_LABEL = { red: '待補', yellow: '未達目標', green: '足夠' };
+function hasDaily(it){ return it.daily !== false; }
+function hasEm(it){ return !!(it.emergency && it.emergency.enabled); }
 function level(it){ return it.mode === 'stock' ? it.spare : it.quantity; }
 function levelOf(mode, snap){ return mode === 'stock' ? snap.spare : snap.quantity; }
 function statusOf(it){
@@ -433,7 +614,7 @@ function statusOf(it){
   if (v === it.redLine + 1) return 'yellow';
   return 'green';
 }
-function isBuy(it){ return !it.archived && statusOf(it) === 'red'; }
+function isBuy(it){ return !it.archived && hasDaily(it) && statusOf(it) === 'red'; }
 function buyItems(){ return activeItems().filter(isBuy); }
 function needToLeave(it){ return it.redLine + 1 - level(it); } // 至少補幾個才會移出待買
 function snap(it){ return { quantity: it.quantity, inUse: it.inUse, spare: it.spare }; }
@@ -441,20 +622,61 @@ function stateText(mode, s, unit){
   if (mode === 'stock') return (s.inUse ? '使用中 1' : '沒有開封的') + ' · 備品 ' + s.spare + ' ' + unit;
   return '剩 ' + s.quantity + ' ' + unit;
 }
+function emInfo(it){
+  var x = expInfo(batchesOf(it, 'emergency'), warnDaysOf(it));
+  x.eff = x.total - x.expired;
+  return x;
+}
+function emStatus(it){
+  var e = emInfo(it), em = it.emergency;
+  return e.eff >= em.target ? 'green' : e.eff <= em.redLine ? 'red' : 'yellow';
+}
+// 緊急備品要不要進待買清單：有效 ≤ 紅線，或有快到期／已過期的要換新
+// 建議買 = 目標 −（有效 − 快到期）：快到期的先算成「要換掉」，所以不會重複計算
+function emBuy(it){
+  if (it.archived || !hasEm(it)) return null;
+  var e = emInfo(it), em = it.emergency;
+  var need = Math.max(0, em.target - (e.eff - e.soon));
+  if (need > 0 && (e.eff <= em.redLine || e.soon > 0 || e.expired > 0)){ e.need = need; return e; }
+  return null;
+}
+function emBuyItems(){ return activeItems().filter(function(it){ return !!emBuy(it); }); }
+// 開封後期限
+function afterOpenDeadline(it){
+  if (!it.inUse || !it.openedAt || !it.afterOpen) return null;
+  var a = it.afterOpen;
+  return dayStart(a.unit === 'month' ? addMonths(it.openedAt, a.n) : it.openedAt + a.n * DAY);
+}
+function afterOpenText(a){ return a ? (a.kind === 'label' ? '開封後 ' + a.n + (a.unit === 'month' ? ' 個月' : ' 天') + '內用完' : '開封 ' + a.n + (a.unit === 'month' ? ' 個月' : ' 天')) : ''; }
+var OPEN_WARN = 7;
+// 首頁「即將到期」：日常效期快到或過期、開封中那包的效期或開封後期限快到
+function expAlert(it){
+  if (!hasDaily(it)) return false;
+  var w = warnDaysOf(it), x = expInfo(batchesOf(it, 'daily'), w);
+  if (x.expired || x.soon) return true;
+  if (it.inUse && it.openedExp && daysLeft(it.openedExp) <= w) return true;
+  var dl = afterOpenDeadline(it);
+  return dl != null && daysUntil(dl) <= OPEN_WARN;
+}
 
 /* ================= 變動（唯一入口） ================= */
-function applyChange(it, action, d, extra){
+function applyChange(it, action, d, extra, t){
   d = d || {};
+  t = t || begin(it);
   var before = snap(it);
   it.quantity += d.dQty || 0;
   it.inUse += d.dInUse || 0;
   it.spare += d.dSpare || 0;
   it.updatedAt = now();
+  var emDelta = t.bch.reduce(function(s, c){ return s + (c.pool === 'emergency' ? c.d : 0); }, 0);
   var log = {
     id: uid(), itemId: it.id, at: now(), mode: it.mode, action: action,
     dQty: d.dQty || 0, dInUse: d.dInUse || 0, dSpare: d.dSpare || 0,
-    before: before, after: snap(it), by: null
+    before: before, after: snap(it), by: null,
+    emBefore: poolSum(it, 'emergency') - emDelta, emAfter: poolSum(it, 'emergency')
   };
+  if (t.bch.length) log.bch = t.bch;
+  if (Object.keys(t.patch).length) log.patch = t.patch;
   if (extra) for (var k in extra) log[k] = extra[k];
   db.logs.push(log);
   persist();
@@ -499,6 +721,7 @@ function stockStats(it){
   if (r.ready) r.avgDays = durs.reduce(function(s, x){ return s + x; }, 0) / durs.length / DAY;
   return r;
 }
+// 購買頻率只看日常的補貨／入庫；緊急補貨、從緊急調用都不算
 function buyFreq(it){
   var seen = {}, days = [];
   itemLogs(it.id).forEach(function(l){
@@ -549,19 +772,33 @@ function undoLast(u){
   if (idx < 0 || !it){ showToast('這筆紀錄已經無法復原'); return; }
   var log = db.logs[idx];
   it.quantity -= log.dQty; it.inUse -= log.dInUse; it.spare -= log.dSpare;
+  (log.bch || []).slice().reverse().forEach(function(c){
+    var b = null;
+    it.batches.forEach(function(x){ if (x.id === c.id) b = x; });
+    if (b){ b.qty -= c.d; if (b.qty <= 0) it.batches = it.batches.filter(function(x){ return x !== b; }); }
+    else if (-c.d > 0) it.batches.push({ id: c.id, pool: c.pool, exp: c.exp, addedAt: c.addedAt, qty: -c.d });
+  });
+  if (log.patch) for (var k in log.patch) it[k] = log.patch[k][0];
   it.updatedAt = now();
   db.logs.splice(idx, 1);
   persist();
   render();
-  showToast('已復原：' + it.name + '（' + stateText(it.mode, snap(it), it.unit) + '）', null, 2500);
+  showToast('已復原：' + it.name, null, 2500);
 }
 
 // 操作完成後的回饋：說明變動、是否進出待買清單，並提供 5 秒內復原
-function afterAction(it, log, msg, more){
-  var wasRed = levelOf(log.mode, log.before) <= it.redLine;
-  var isRed = statusOf(it) === 'red';
-  if (!wasRed && isRed) msg += '，已加入待買清單';
-  else if (wasRed && !isRed) msg += '，已移出待買清單';
+function afterAction(it, log, msg, more, wasEm){
+  if (hasDaily(it) && (log.dQty || log.dSpare)){
+    var wasRed = levelOf(log.mode, log.before) <= it.redLine;
+    var isRed = statusOf(it) === 'red';
+    if (!wasRed && isRed) msg += '，已加入待買清單';
+    else if (wasRed && !isRed) msg += '，已移出待買清單';
+  }
+  if (wasEm !== undefined){
+    var nowEm = !!emBuy(it);
+    if (!wasEm && nowEm) msg += '，緊急備品已加入待買清單';
+    else if (wasEm && !nowEm) msg += '，緊急備品已移出待買清單';
+  }
   render();
   var u = { logId: log.id, itemId: it.id };
   var actions = (more || []).concat([{ label: '復原', icon: 'undo', fn: function(){ undoLast(u); } }]);
@@ -572,39 +809,122 @@ function afterAction(it, log, msg, more){
 function actConsume(id){
   var it = getItem(id); if (!it) return;
   if (it.quantity <= 0){ showToast('「' + it.name + '」已經是 0 了'); return; }
-  var log = applyChange(it, 'consume', { dQty: -1 });
+  var t = begin(it); bTake(t, 'daily', 1);
+  var log = applyChange(it, 'consume', { dQty: -1 }, null, t);
   afterAction(it, log, it.name + ' 用掉 1 ' + it.unit + '（剩 ' + it.quantity + '）');
 }
 function actAdd(id){
   var it = getItem(id); if (!it) return;
-  var log = applyChange(it, 'add', { dQty: 1 });
+  var t = begin(it); bAdd(t, 'daily', 1, null);
+  var log = applyChange(it, 'add', { dQty: 1 }, null, t);
   afterAction(it, log, it.name + ' 入庫 +1（共 ' + it.quantity + '）');
 }
 function actOpen(id){
   var it = getItem(id); if (!it) return;
   if (it.inUse > 0){ showToast('「' + it.name + '」已經有一' + it.unit + '在使用中，用完後再按「用完」'); return; }
   if (it.spare <= 0){ showToast('沒有備品可以開封，請先補貨'); return; }
-  var log = applyChange(it, 'open', { dSpare: -1, dInUse: 1 });
-  afterAction(it, log, '開封一' + it.unit + it.name + '（備品剩 ' + it.spare + '）');
+  var t = begin(it), taken = bTake(t, 'daily', 1);
+  setF(t, 'openedAt', now());
+  setF(t, 'openedExp', taken[0] ? taken[0].exp : null);
+  var log = applyChange(it, 'open', { dSpare: -1, dInUse: 1 }, null, t);
+  afterAction(it, log, '開封一' + it.unit + it.name + (it.openedExp ? '（這' + it.unit + fmtYmd(it.openedExp) + ' 到期）' : '') + '，備品剩 ' + it.spare);
 }
 function actFinish(id){
   var it = getItem(id); if (!it) return;
   if (it.inUse <= 0){ showToast('目前沒有開封中的「' + it.name + '」'); return; }
-  var log = applyChange(it, 'finish', { dInUse: -1 });
+  var t = begin(it);
+  setF(t, 'openedAt', null); setF(t, 'openedExp', null);
+  var log = applyChange(it, 'finish', { dInUse: -1 }, null, t);
   var more = [];
   if (it.spare > 0) more.push({ label: '開下一' + it.unit, icon: 'open', alt: true, fn: function(){ actOpen(id); } });
   afterAction(it, log, it.name + ' 用完了（備品 ' + it.spare + '）', more);
 }
-function doRestock(id, n){
+// exps：每一個的效期（null = 未標效期），長度 = n
+function doRestock(id, n, pool, exps){
   var it = getItem(id); if (!it || !(n > 0)) return;
-  var log;
-  if (it.mode === 'stock'){
-    log = applyChange(it, 'restock', { dSpare: n });
-    afterAction(it, log, it.name + ' 補貨 +' + n + '（備品 ' + it.spare + '）');
-  } else {
-    log = applyChange(it, 'add', { dQty: n });
-    afterAction(it, log, it.name + ' 補貨 +' + n + '（共 ' + it.quantity + '）');
+  var wasEm = !!emBuy(it);
+  var t = begin(it), groups = {}, order = [];
+  for (var i = 0; i < n; i++){
+    var e = exps && validYmd(exps[i]) ? exps[i] : '';
+    if (!(e in groups)){ groups[e] = 0; order.push(e); }
+    groups[e]++;
   }
+  order.forEach(function(e){ bAdd(t, pool, groups[e], e || null); });
+  var dated = order.filter(function(e){ return e; }).map(function(e){ return fmtYmd(e); });
+  var expNote = dated.length ? '，效期 ' + dated.join('、') : '';
+  var log;
+  if (pool === 'emergency'){
+    log = applyChange(it, 'emRestock', {}, { pool: 'emergency', n: n }, t);
+    afterAction(it, log, it.name + ' 緊急備品 +' + n + '（' + log.emBefore + ' → ' + log.emAfter + '）' + expNote, null, wasEm);
+    return;
+  }
+  log = it.mode === 'stock'
+    ? applyChange(it, 'restock', { dSpare: n }, { pool: 'daily', n: n }, t)
+    : applyChange(it, 'add', { dQty: n }, { pool: 'daily', n: n }, t);
+  afterAction(it, log, it.name + ' 補貨 +' + n + '（' + (it.mode === 'stock' ? '備品 ' + it.spare : '共 ' + it.quantity) + '）' + expNote);
+}
+// 從緊急調用到日常：先拿最早到期的，效期一起帶過去；不算消耗
+function doTransfer(id, n){
+  var it = getItem(id); if (!it) return;
+  var wasEm = !!emBuy(it);
+  var t = begin(it), taken = bTake(t, 'emergency', n);
+  var moved = taken.reduce(function(s, x){ return s + x.qty; }, 0);
+  if (!moved) return;
+  taken.forEach(function(x){ bAdd(t, 'daily', x.qty, x.exp); });
+  var d = it.mode === 'stock' ? { dSpare: moved } : { dQty: moved };
+  var log = applyChange(it, 'transfer', d, { pool: 'emergency', n: moved }, t);
+  afterAction(it, log, '從緊急調用 ' + moved + ' ' + it.unit + it.name + ' 到日常', null, wasEm);
+}
+// 用掉緊急備品（只放緊急包的物品），不算日常消耗
+function doEmUse(id, n){
+  var it = getItem(id); if (!it) return;
+  var wasEm = !!emBuy(it);
+  var t = begin(it), taken = bTake(t, 'emergency', n);
+  var used = taken.reduce(function(s, x){ return s + x.qty; }, 0);
+  if (!used) return;
+  var log = applyChange(it, 'emUse', {}, { pool: 'emergency', n: used }, t);
+  afterAction(it, log, '用掉緊急的' + it.name + ' ' + used + ' ' + it.unit + '（剩 ' + log.emAfter + '）', null, wasEm);
+}
+function findBatch(it, bid){ var r = null; it.batches.forEach(function(b){ if (b.id === bid) r = b; }); return r; }
+function poolDelta(it, pool, d){ return pool === 'emergency' ? {} : it.mode === 'stock' ? { dSpare: d } : { dQty: d }; }
+function doDiscard(id, bid, n){
+  var it = getItem(id), b = it && findBatch(it, bid); if (!b) return;
+  n = Math.min(n, b.qty);
+  var wasEm = !!emBuy(it), pool = b.pool, exp = b.exp;
+  var t = begin(it); bChange(t, b, -n);
+  var log = applyChange(it, 'discard', poolDelta(it, pool, -n), { pool: pool, n: n, exp: exp }, t);
+  afterAction(it, log, '丟棄 ' + n + ' ' + it.unit + it.name + (pool === 'emergency' ? '（緊急）' : '') + '，不算消耗', null, pool === 'emergency' ? wasEm : undefined);
+}
+// 修改一批的效期或數量；數量改了等於盤點校正
+function doEditBatch(id, bid, newExp, newQty){
+  var it = getItem(id), b = it && findBatch(it, bid); if (!b) return;
+  newExp = validYmd(newExp) ? newExp : null;
+  var oldQty = b.qty, oldExp = b.exp, pool = b.pool;
+  if (newExp === oldExp && newQty === oldQty){ showToast('沒有變動'); return; }
+  var wasEm = !!emBuy(it);
+  var t = begin(it);
+  bChange(t, b, -oldQty);
+  bAdd(t, pool, newQty, newExp);
+  var dq = newQty - oldQty;
+  var log = applyChange(it, dq ? 'adjust' : 'editBatch', poolDelta(it, pool, dq), { pool: pool, fromExp: oldExp, toExp: newExp, fromQty: oldQty, toQty: newQty }, t);
+  afterAction(it, log, '已更新' + it.name + '的批次：' + newQty + ' ' + it.unit + ' · ' + (newExp ? fmtYmd(newExp) + ' 到期' : '未標效期'), null, pool === 'emergency' ? wasEm : undefined);
+}
+// 檢查時發現多的：新增一批（記成校正）
+function doAddBatch(id, pool, qty, exp){
+  var it = getItem(id); if (!it || !(qty > 0)) return;
+  var wasEm = !!emBuy(it);
+  var t = begin(it); bAdd(t, pool, qty, exp);
+  var log = applyChange(it, 'adjust', poolDelta(it, pool, qty), { pool: pool, toExp: validYmd(exp) ? exp : null, toQty: qty, added: true }, t);
+  afterAction(it, log, '已新增一批 ' + qty + ' ' + it.unit + (validYmd(exp) ? ' · ' + fmtYmd(exp) + ' 到期' : ''), null, pool === 'emergency' ? wasEm : undefined);
+}
+function doEditOpen(id, dateStr){
+  var it = getItem(id); if (!it || !it.inUse || !validYmd(dateStr)) return;
+  var t = begin(it);
+  var at = parseYmd(dateStr) + 12 * 3600e3;
+  if (dayStart(at) > dayStart(now())){ showToast('開封日期不能在未來'); return; }
+  setF(t, 'openedAt', at);
+  var log = applyChange(it, 'editOpen', {}, { openedAt: at }, t);
+  afterAction(it, log, '開封日期改成 ' + fmtDate(at));
 }
 
 /* ================= 底部面板 ================= */
@@ -629,49 +949,176 @@ function openConfirm(o, onOk){
     function(root){ root.querySelector('[data-ok]').onclick = function(){ closeSheet(); onOk(); }; });
 }
 
-// 補貨：選 +1 / +2 / +3 / 自訂 → 確認或取消
-function openRestock(id){
+// 補貨：選 +1 / +2 / +3 / 自訂（可選效期）→ 確認或取消
+function openRestock(id, opt){
   var it = getItem(id); if (!it) return;
-  var n = 1;
-  var field = it.mode === 'stock' ? '備品' : '數量';
+  opt = opt || {};
+  var pool = opt.pool || (hasDaily(it) ? 'daily' : 'emergency');
+  var n = opt.n > 0 ? opt.n : 1, custom = n > 3;
+  var expMode = 'none', dates = [];
+  var canPick = hasDaily(it) && hasEm(it);
   openSheet(
     '<h2>' + ic('restock') + '補貨：' + esc(it.name) + '</h2>' +
     '<p class="sub">選擇這次買了幾' + esc(it.unit) + '，按「確認補貨」才會記錄。</p>' +
-    '<div class="pick">' + [1, 2, 3].map(function(k){ return '<button class="pick-btn' + (k === 1 ? ' on' : '') + '" data-n="' + k + '">+' + k + '</button>'; }).join('') +
+    (canPick ? '<span class="flabel">補到哪裡</span><div class="seg" id="rs-pool"><button data-pool="daily">日常</button><button data-pool="emergency">' + ic('sos', 'ic-sm') + ' 緊急備品</button></div>' : '') +
+    '<div class="pick">' + [1, 2, 3].map(function(k){ return '<button class="pick-btn" data-n="' + k + '">+' + k + '</button>'; }).join('') +
     '<button class="pick-btn" data-n="custom">自訂</button></div>' +
-    '<div class="field" id="rs-custom" hidden style="margin-bottom:12px"><span class="flabel">自訂數量</span><input class="input" type="number" inputmode="numeric" min="1" step="1" value="4" id="rs-input"></div>' +
+    '<div class="field" id="rs-custom" hidden style="margin-bottom:12px"><span class="flabel">自訂數量</span><input class="input" type="number" inputmode="numeric" min="1" step="1" value="' + (custom ? n : 4) + '" id="rs-input"></div>' +
+    '<span class="flabel">有效期限（選填，之後也可以補）</span><div class="seg" id="rs-exp"><button data-m="none">不填</button><button data-m="same">全部同一個</button><button data-m="each">每個不一樣</button></div>' +
+    '<div id="rs-dates"></div>' +
     '<div class="preview" id="rs-preview"></div>' +
     '<div class="sheet-acts"><button class="btn ghost" data-close>取消</button><button class="btn primary" data-ok>' + ic('check') + '確認補貨</button></div>',
     function(root){
-      var input = root.querySelector('#rs-input'), custom = false;
+      var input = root.querySelector('#rs-input');
+      function cur(){ return custom ? toInt(input.value, 0) : n; }
+      function drawDates(){
+        var k = cur(), box = root.querySelector('#rs-dates');
+        root.querySelectorAll('#rs-exp button').forEach(function(b){ b.classList.toggle('on', b.dataset.m === expMode); });
+        var eachBtn = root.querySelector('#rs-exp [data-m=each]');
+        eachBtn.disabled = k > 30;
+        if (expMode === 'each' && k > 30) expMode = 'same';
+        if (expMode === 'none'){ box.innerHTML = ''; return; }
+        if (expMode === 'same'){ box.innerHTML = '<div class="date-list"><span>全部</span><input class="input" type="date" data-i="0" value="' + (dates[0] || '') + '"></div>'; }
+        else {
+          var h = '<div class="date-list">';
+          for (var i = 0; i < k; i++) h += '<span>第 ' + (i + 1) + ' ' + esc(it.unit) + '</span><input class="input" type="date" data-i="' + i + '" value="' + (dates[i] || '') + '">';
+          box.innerHTML = h + '</div>';
+        }
+        box.querySelectorAll('input').forEach(function(inp){
+          inp.onchange = function(){
+            var i = +inp.dataset.i; dates[i] = inp.value;
+            // 下一欄還空著就先帶入同一天，只要改不同的
+            if (expMode === 'each') box.querySelectorAll('input').forEach(function(o){ var j = +o.dataset.i; if (j > i && !o.value){ o.value = inp.value; dates[j] = inp.value; } });
+            upd();
+          };
+        });
+      }
       function upd(){
-        if (custom) n = toInt(input.value, 0);
-        var cur = level(it), to = cur + (n > 0 ? n : 0);
-        var note;
-        if (!(n > 0)) note = '<span class="err">請輸入 1 以上的整數</span>';
-        else if (cur <= it.redLine && to > it.redLine) note = '補完會移出待買清單';
-        else if (to <= it.redLine) note = '補完仍在待買清單（要超過紅線 ' + it.redLine + ' 才會移出）';
-        else note = '';
-        root.querySelector('#rs-preview').innerHTML = field + ' ' + cur + ' → <span class="to">' + to + '</span> ' + esc(it.unit) + (note ? '<br><small>' + note + '</small>' : '');
-        root.querySelector('[data-ok]').disabled = !(n > 0);
+        var k = cur();
+        root.querySelectorAll('.pick-btn').forEach(function(b){ b.classList.toggle('on', custom ? b.dataset.n === 'custom' : +b.dataset.n === n); });
+        root.querySelector('#rs-custom').hidden = !custom;
+        if (canPick) root.querySelectorAll('#rs-pool button').forEach(function(b){ b.classList.toggle('on', b.dataset.pool === pool); });
+        var note = '', html;
+        if (!(k > 0)) note = '<span class="err">請輸入 1 以上的整數</span>';
+        if (pool === 'emergency'){
+          var e = emInfo(it);
+          html = '緊急有效 ' + e.eff + ' → <span class="to">' + (e.eff + (k > 0 ? k : 0)) + '</span> ' + esc(it.unit) + '（目標 ' + it.emergency.target + '）';
+          if (!note && e.soon + e.expired > 0) note = '快到期／過期的舊品，記得「調用到日常」先用掉或丟棄';
+        } else {
+          var c = level(it), to = c + (k > 0 ? k : 0);
+          html = (it.mode === 'stock' ? '備品' : '數量') + ' ' + c + ' → <span class="to">' + to + '</span> ' + esc(it.unit);
+          if (!note && c <= it.redLine && to > it.redLine) note = '補完會移出待買清單';
+          else if (!note && to <= it.redLine) note = '補完仍在待買清單（要超過紅線 ' + it.redLine + ' 才會移出）';
+        }
+        root.querySelector('#rs-preview').innerHTML = html + (note ? '<br><small>' + note + '</small>' : '');
+        root.querySelector('[data-ok]').disabled = !(k > 0);
       }
       root.querySelectorAll('.pick-btn').forEach(function(b){
         b.onclick = function(){
-          root.querySelectorAll('.pick-btn').forEach(function(x){ x.classList.remove('on'); });
-          b.classList.add('on');
           custom = b.dataset.n === 'custom';
-          root.querySelector('#rs-custom').hidden = !custom;
-          if (custom){ input.focus(); input.select(); } else n = +b.dataset.n;
-          upd();
+          if (!custom) n = +b.dataset.n;
+          upd(); drawDates();
+          if (custom){ input.focus(); input.select(); }
         };
       });
-      input.oninput = upd;
-      root.querySelector('[data-ok]').onclick = function(){ if (!(n > 0)) return; closeSheet(); doRestock(id, n); };
+      root.querySelectorAll('#rs-exp button').forEach(function(b){ b.onclick = function(){ expMode = b.dataset.m; drawDates(); upd(); }; });
+      if (canPick) root.querySelectorAll('#rs-pool button').forEach(function(b){ b.onclick = function(){ pool = b.dataset.pool; upd(); }; });
+      input.oninput = function(){ upd(); if (expMode === 'each') drawDates(); };
+      root.querySelector('[data-ok]').onclick = function(){
+        var k = cur(); if (!(k > 0)) return;
+        var exps = [];
+        for (var i = 0; i < k; i++) exps.push(expMode === 'none' ? null : expMode === 'same' ? (dates[0] || null) : (dates[i] || null));
+        closeSheet();
+        doRestock(id, k, pool, exps);
+      };
+      upd(); drawDates();
+    });
+}
+
+// 調用到日常／用掉緊急備品：選數量，先拿最早到期的
+function openEmMove(id, kind){
+  var it = getItem(id); if (!it) return;
+  var e = emInfo(it), total = e.total;
+  if (!total){ showToast('緊急備品目前是 0'); return; }
+  var def = Math.min(total, Math.max(1, e.expired + e.soon));
+  var title = kind === 'transfer' ? '從緊急調用到日常' : '用掉緊急備品';
+  var sub = kind === 'transfer'
+    ? '拿出來放進日常庫存先用掉（例如快到期的），<b>不算消耗</b>。會先拿最早到期的。'
+    : '這個物品只放在緊急包。用掉會從緊急數量扣除，先扣最早到期的。';
+  openSheet('<h2>' + ic(kind === 'transfer' ? 'move' : 'minus') + title + '：' + esc(it.name) + '</h2><p class="sub">' + sub + '</p>' +
+    '<div class="field"><span class="flabel">數量（緊急共 ' + total + ' ' + esc(it.unit) + '）</span>' + stepperHtml('mv-n', def) + '</div>' +
+    '<div class="preview" id="mv-preview"></div>' +
+    '<div class="sheet-acts"><button class="btn ghost" data-close>取消</button><button class="btn primary" data-ok>' + ic('check') + '確認</button></div>',
+    function(root){
+      bindSteppers(root);
+      var inp = root.querySelector('#mv-n');
+      function upd(){
+        var k = Math.min(total, Math.max(0, toInt(inp.value, 0))), left = k, parts = [];
+        batchesOf(it, 'emergency').forEach(function(b){ if (left <= 0) return; var q = Math.min(left, b.qty); parts.push(q + ' ' + esc(it.unit) + '（' + (b.exp ? fmtYmd(b.exp) + ' 到期' : '未標效期') + '）'); left -= q; });
+        root.querySelector('#mv-preview').innerHTML = k > 0 ? '會拿：' + parts.join('、') : '<span class="err">請輸入 1～' + total + '</span>';
+        root.querySelector('[data-ok]').disabled = !(k > 0);
+      }
+      inp.addEventListener('input', upd);
+      root.querySelector('[data-ok]').onclick = function(){
+        var k = Math.min(total, Math.max(0, toInt(inp.value, 0))); if (!k) return;
+        closeSheet();
+        if (kind === 'transfer') doTransfer(id, k); else doEmUse(id, k);
+      };
       upd();
     });
 }
 
-// 盤點校正：直接輸入實際數量，不算消耗
+// 編輯一批：改效期、改數量（校正），或丟棄
+function openBatch(id, bid){
+  var it = getItem(id), b = it && findBatch(it, bid); if (!b) return;
+  var u = esc(it.unit);
+  openSheet('<h2>' + ic('cal') + (b.pool === 'emergency' ? '緊急備品' : '日常') + '批次：' + esc(it.name) + '</h2>' +
+    '<p class="sub">目前 ' + b.qty + ' ' + u + ' · ' + esc(expText(b.exp)) + '</p>' +
+    '<div class="field" style="margin-bottom:14px"><span class="flabel">有效期限（清空 = 未標效期）</span><input class="input" type="date" id="bt-exp" value="' + (b.exp || '') + '"></div>' +
+    '<div class="field" style="margin-bottom:6px"><span class="flabel">這批的數量（數錯時修正，記成盤點校正）</span>' + stepperHtml('bt-qty', b.qty) + '</div>' +
+    '<div class="sheet-acts" style="margin-top:14px"><button class="btn ghost" data-close>取消</button><button class="btn primary" data-ok>' + ic('check') + '儲存</button></div>' +
+    '<div class="panel" style="margin:16px 0 0"><h2>' + ic('trash') + '丟棄（過期、壞掉）</h2><p class="hint" style="margin:0 0 10px">丟棄會記在歷史裡，不算消耗。</p>' +
+    '<div class="row2">' + stepperHtml('bt-dn', b.qty) + '</div><button class="btn block danger" data-discard style="margin-top:10px">' + ic('trash') + '丟棄</button></div>',
+    function(root){
+      bindSteppers(root);
+      root.querySelector('[data-ok]').onclick = function(){
+        var q = Math.max(0, toInt(root.querySelector('#bt-qty').value, b.qty));
+        var e = root.querySelector('#bt-exp').value;
+        closeSheet(); doEditBatch(id, bid, e, q);
+      };
+      root.querySelector('[data-discard]').onclick = function(){
+        var dn = Math.min(b.qty, Math.max(0, toInt(root.querySelector('#bt-dn').value, 0)));
+        if (!dn){ showToast('請輸入要丟棄的數量'); return; }
+        closeSheet(); doDiscard(id, bid, dn);
+      };
+    });
+}
+function openAddBatch(id, pool){
+  var it = getItem(id); if (!it) return;
+  openSheet('<h2>' + ic('plus') + '新增一批：' + esc(it.name) + '</h2><p class="sub">檢查時發現 app 沒記到的庫存用這個，會記成盤點校正。真的是剛買的請用「補貨」。</p>' +
+    '<div class="field" style="margin-bottom:14px"><span class="flabel">數量</span>' + stepperHtml('ab-qty', 1) + '</div>' +
+    '<div class="field" style="margin-bottom:14px"><span class="flabel">有效期限（選填）</span><input class="input" type="date" id="ab-exp"></div>' +
+    '<div class="sheet-acts"><button class="btn ghost" data-close>取消</button><button class="btn primary" data-ok>' + ic('check') + '新增</button></div>',
+    function(root){
+      bindSteppers(root);
+      root.querySelector('[data-ok]').onclick = function(){
+        var q = Math.max(0, toInt(root.querySelector('#ab-qty').value, 0));
+        if (!q){ showToast('數量要 1 以上'); return; }
+        closeSheet(); doAddBatch(id, pool, q, root.querySelector('#ab-exp').value);
+      };
+    });
+}
+function openEditOpen(id){
+  var it = getItem(id); if (!it || !it.inUse) return;
+  openSheet('<h2>' + ic('cal') + '修改開封日期</h2><p class="sub">忘了按「開封」、晚一點才補按時，把日期改成實際開封那天。</p>' +
+    '<input class="input" type="date" id="eo-date" max="' + ymd(now()) + '" value="' + (it.openedAt ? ymd(it.openedAt) : ymd(now())) + '">' +
+    '<div class="sheet-acts" style="margin-top:14px"><button class="btn ghost" data-close>取消</button><button class="btn primary" data-ok>' + ic('check') + '儲存</button></div>',
+    function(root){
+      root.querySelector('[data-ok]').onclick = function(){ var v = root.querySelector('#eo-date').value; closeSheet(); doEditOpen(id, v); };
+    });
+}
+
+// 盤點校正：直接輸入實際數量，不算消耗（減少時先扣最早到期的、增加的記成未標效期）
 function openAdjust(id){
   var it = getItem(id); if (!it) return;
   var body = it.mode === 'stock'
@@ -681,23 +1128,27 @@ function openAdjust(id){
       '<div class="field"><span class="flabel">未開封備品（' + esc(it.unit) + '）</span>' + stepperHtml('aj-spare', it.spare) + '</div>'
     : '<div class="field"><span class="flabel">實際數量（' + esc(it.unit) + '）</span>' + stepperHtml('aj-qty', it.quantity) + '</div>';
   openSheet('<h2>' + ic('adjust') + '盤點校正：' + esc(it.name) + '</h2>' +
-    '<p class="sub">數到的實際數量跟 app 不一樣時用。這筆會記在歷史裡，但<b>不算消耗</b>，不影響使用速度估算。</p>' + body +
+    '<p class="sub">數到的實際數量跟 app 不一樣時用。這筆會記在歷史裡，但<b>不算消耗</b>，不影響使用速度估算。要改某一批的效期，請到物品頁的「效期批次」。</p>' + body +
     '<div class="sheet-acts"><button class="btn ghost" data-close>取消</button><button class="btn primary" data-ok>' + ic('check') + '確認校正</button></div>',
     function(root){
       bindSteppers(root);
       root.querySelector('[data-ok]').onclick = function(){
-        var d;
+        var d, t = begin(it);
         if (it.mode === 'stock'){
           var iu = root.querySelector('input[name=aj-inuse]:checked').value === '1' ? 1 : 0;
           var sp = Math.max(0, toInt(root.querySelector('#aj-spare').value, it.spare));
           d = { dInUse: iu - it.inUse, dSpare: sp - it.spare };
+          if (iu && !it.inUse){ setF(t, 'openedAt', now()); setF(t, 'openedExp', null); }
+          if (!iu && it.inUse){ setF(t, 'openedAt', null); setF(t, 'openedExp', null); }
+          syncPool(t, 'daily', sp);
         } else {
           var q = Math.max(0, toInt(root.querySelector('#aj-qty').value, it.quantity));
           d = { dQty: q - it.quantity };
+          syncPool(t, 'daily', q);
         }
         closeSheet();
         if (!d.dQty && !d.dInUse && !d.dSpare){ showToast('數量沒有變動'); return; }
-        var log = applyChange(it, 'adjust', d);
+        var log = applyChange(it, 'adjust', d, { pool: 'daily' }, t);
         afterAction(it, log, it.name + ' 已校正為 ' + stateText(it.mode, snap(it), it.unit));
       };
     });
@@ -722,25 +1173,33 @@ function openSwitchMode(id){
   body += '<div class="field"><span class="flabel">紅線</span>' + stepperHtml('sw-red', it.redLine) +
     '<p class="fhint">' + (to === 'stock' ? '切換後紅線看「備品」數量：備品 ≤ 紅線 就加入待買清單。' : '切換後紅線看「數量」：數量 ≤ 紅線 就加入待買清單。') + '</p></div>';
   openSheet('<h2>' + ic('swap') + '切換成「' + MODE_LABEL[to] + '」</h2>' + body +
-    '<p class="fhint" style="margin-bottom:12px">以前的歷史紀錄都會保留，不會被換算或刪除。</p>' +
+    '<p class="fhint" style="margin-bottom:12px">以前的歷史紀錄都會保留，不會被換算或刪除。緊急備品不受影響。</p>' +
     '<div class="sheet-acts"><button class="btn ghost" data-close>取消</button><button class="btn primary" data-ok>' + ic('check') + '確認切換</button></div>',
     function(root){
       bindSteppers(root);
       root.querySelector('[data-ok]').onclick = function(){
-        var before = snap(it), from = it.mode, oldRed = it.redLine;
+        var before = snap(it), from = it.mode, oldRed = it.redLine, t = begin(it);
         var next = { quantity: 0, inUse: 0, spare: 0 };
         if (to === 'stock'){
           next.inUse = root.querySelector('input[name=sw-inuse]:checked').value === '1' ? 1 : 0;
           next.spare = Math.max(0, toInt(root.querySelector('#sw-spare').value, 0));
+          // 開封中那包從日常批次裡拿最早到期的
+          if (next.inUse){
+            var taken = poolSum(it, 'daily') > 0 ? bTake(t, 'daily', 1) : [];
+            setF(t, 'openedAt', now()); setF(t, 'openedExp', taken[0] ? taken[0].exp : null);
+          }
+          syncPool(t, 'daily', next.spare);
         } else {
           next.quantity = Math.max(0, toInt(root.querySelector('#sw-qty').value, 0));
+          if (it.inUse){ bAdd(t, 'daily', 1, it.openedExp); setF(t, 'openedAt', null); setF(t, 'openedExp', null); }
+          syncPool(t, 'daily', next.quantity);
         }
-        it.redLine = Math.max(0, toInt(root.querySelector('#sw-red').value, it.redLine));
-        it.mode = to;
+        setF(t, 'redLine', Math.max(0, toInt(root.querySelector('#sw-red').value, it.redLine)));
+        setF(t, 'mode', to);
         closeSheet();
         var log = applyChange(it, 'switchMode',
           { dQty: next.quantity - before.quantity, dInUse: next.inUse - before.inUse, dSpare: next.spare - before.spare },
-          { from: from, to: to, redLineFrom: oldRed, redLineTo: it.redLine });
+          { from: from, to: to, redLineFrom: oldRed, redLineTo: it.redLine }, t);
         render();
         showToast('已切換成「' + MODE_LABEL[to] + '」：' + stateText(to, log.after, it.unit), null, 3500);
       };
@@ -763,7 +1222,7 @@ function bindSteppers(root){
 }
 
 /* ================= 路由 ================= */
-var ui = { filter: null, histShow: 30 };
+var ui = { filter: null, cat: null, histShow: 30, checked: {} };
 function route(){
   var h = location.hash || '#/';
   var p = h.replace(/^#\/?/, '').split('/');
@@ -781,19 +1240,65 @@ function render(){
   else if (r.name === 'new') html = renderForm(null, r.id);
   else if (r.name === 'edit') html = renderForm(r.id);
   else if (r.name === 'item') html = renderDetail(r.id);
+  else if (r.name === 'emergency') html = renderEmergency();
+  else if (r.name === 'check') html = renderCheck();
   else html = renderHome();
   v.innerHTML = (storageOk ? '' : '<div class="warn-banner">這個瀏覽器目前無法儲存資料（可能是無痕模式），關掉後紀錄會不見。</div>') + html;
   if (r.name === 'new' || r.name === 'edit') mountForm(r.name === 'edit' ? r.id : null);
+  if (r.name === 'settings') mountSettings();
   // 底部導覽
-  var tabKey = { home: '#/', item: '#/', buy: '#/buy', 'new': '#/new', edit: '#/', settings: '#/settings' }[r.name] || '#/';
+  var tabKey = { home: '#/', item: '#/', buy: '#/buy', 'new': '#/new', edit: '#/', settings: '#/settings', emergency: '#/emergency', check: '#/emergency' }[r.name] || '#/';
   document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('on', t.dataset.id === tabKey); });
-  var n = buyItems().length, badge = document.getElementById('buy-badge');
-  badge.hidden = !n; badge.textContent = n;
+  var nEm = emBuyItems().length, n = buyItems().length + nEm;
+  var badge = document.getElementById('buy-badge'); badge.hidden = !n; badge.textContent = n;
+  var eb = document.getElementById('em-badge'); eb.hidden = !nEm; eb.textContent = nEm;
 }
 
 /* ================= 首頁 ================= */
 var WEEK = ['日', '一', '二', '三', '四', '五', '六'];
-function pill(st){ return '<span class="pill p-' + st + '"><span class="light"></span>' + STATUS[st].label + '</span>'; }
+function pill(st, label){ return '<span class="pill p-' + st + '"><span class="light"></span>' + (label || STATUS[st].label) + '</span>'; }
+function noteLine(cls, icon, html){ return '<div class="note-line ' + cls + '">' + ic(icon) + '<span>' + html + '</span></div>'; }
+// 日常效期提示（卡片）
+function dailyExpNote(it){
+  var w = warnDaysOf(it), list = batchesOf(it, 'daily'), x = expInfo(list, w), u = esc(it.unit);
+  if (x.expired){
+    var oldest = list.filter(function(b){ return b.exp && daysLeft(b.exp) < 0; })[0];
+    return noteLine('bad', 'alert', '已過期 ' + x.expired + ' ' + u + '（' + fmtYmd(oldest.exp) + '）· 丟棄或照常使用由你決定');
+  }
+  if (x.soon) return noteLine('warn', 'clock', '先用 <b>' + fmtYmd(x.firstSoon.exp) + '</b> 到期的 · ' + leftText(daysLeft(x.firstSoon.exp)));
+  if (x.first) return noteLine('mut', 'cal', '最早 ' + fmtYmd(x.first.exp) + ' 到期');
+  return '';
+}
+// 開封中：已開封 X 天、開封後期限、這包的效期
+function openNotes(it, full){
+  if (!it.inUse) return '';
+  var h = '', a = it.afterOpen, dl = afterOpenDeadline(it);
+  if (a){
+    var n = daysUntil(dl), cls = n < 0 ? 'bad' : n <= OPEN_WARN ? 'warn' : '';
+    var tail = ' · 到 ' + fmtT(dl) + (n < 0 ? '（已超過 ' + (-n) + ' 天）' : n <= OPEN_WARN ? '（' + leftText(n) + '）' : '');
+    h += a.kind === 'label'
+      ? noteLine(cls, 'pkg', '包裝標示：' + afterOpenText(a) + tail)
+      : noteLine(cls, 'bell', '個人提醒：' + afterOpenText(a) + tail + '（不是包裝建議）');
+  } else if (full || it.openedAt) h += noteLine('mut', 'pkg', '開封後期限：未設定');
+  if (it.openedExp){
+    var m = daysLeft(it.openedExp), w = warnDaysOf(it);
+    if (full || m <= w){
+      var earlier = dl == null || parseYmd(it.openedExp) <= dl;
+      h += noteLine(m < 0 ? 'bad' : m <= w ? 'warn' : 'mut', 'cal', '這' + esc(it.unit) + '的效期：' + (earlier && dl != null ? '<b>' + fmtYmd(it.openedExp) + '</b>' : fmtYmd(it.openedExp)) + ' · ' + leftText(m));
+    }
+  } else if (full) h += noteLine('mut', 'cal', '這' + esc(it.unit) + '的效期：未標效期');
+  return h;
+}
+function openedDaysText(it){
+  if (!it.openedAt) return '使用中 · 開封時間未記錄';
+  var d = -daysUntil(it.openedAt);
+  return d <= 0 ? '今天開封' : '已開封 ' + d + ' 天';
+}
+function emLine(it){
+  if (!hasEm(it)) return '';
+  var st = emStatus(it), e = emInfo(it);
+  return '<div><span class="em-line p-' + st + '">' + ic('sos') + '緊急 ' + e.eff + '／' + it.emergency.target + ' ' + esc(it.unit) + ' · ' + EM_LABEL[st] + '</span></div>';
+}
 function countBody(it){
   return '<div class="count-row"><div class="qty" data-open="' + esc(it.id) + '"><b>' + it.quantity + '</b><span>' + esc(it.unit) + '</span></div>' +
     '<div class="acts"><button class="btn b-minus' + (it.quantity <= 0 ? ' dim' : '') + '" data-act="consume" data-id="' + esc(it.id) + '">' + ic('minus') + '用掉</button>' +
@@ -801,7 +1306,7 @@ function countBody(it){
 }
 function stockBody(it){
   var id = esc(it.id);
-  return '<div class="stock-row" data-open="' + id + '"><span class="inuse ' + (it.inUse ? 'on' : 'off') + '"><span class="dot"></span>' + (it.inUse ? '使用中' : '沒有開封的') + '</span>' +
+  return '<div class="stock-row" data-open="' + id + '"><span class="inuse ' + (it.inUse ? 'on' : 'off') + '"><span class="dot"></span>' + (it.inUse ? openedDaysText(it) : '沒有開封的') + '</span>' +
     '<span class="spare">備品 <b>' + it.spare + '</b> ' + esc(it.unit) + '</span></div>' +
     '<div class="acts three">' +
     '<button class="btn b-open' + (it.inUse || it.spare <= 0 ? ' dim' : '') + '" data-act="open" data-id="' + id + '">' + ic('open') + '開封</button>' +
@@ -813,68 +1318,112 @@ function cardHtml(it){
   return '<article class="card st-' + st + '">' +
     '<div class="card-top" data-open="' + esc(it.id) + '"><div class="card-title"><h3>' + esc(it.name) + '</h3>' +
     '<div class="meta">' + (it.location ? ic('pin', 'ic-sm') + esc(it.location) + ' · ' : '') + (it.mode === 'stock' ? '備品紅線 ' : '紅線 ') + it.redLine + '</div></div>' + pill(st) + '</div>' +
-    (it.mode === 'stock' ? stockBody(it) : countBody(it)) + '</article>';
+    (it.mode === 'stock' ? stockBody(it) + openNotes(it, false) : countBody(it)) + dailyExpNote(it) + emLine(it) + '</article>';
 }
 function byStatusThenName(a, b){
   var d = STATUS[statusOf(a)].rank - STATUS[statusOf(b)].rank;
   return d || a.name.localeCompare(b.name, 'zh-Hant');
 }
+function passFilter(it){
+  if (ui.cat && it.categoryId !== ui.cat) return false;
+  if (!ui.filter) return true;
+  return ui.filter === 'exp' ? expAlert(it) : statusOf(it) === ui.filter;
+}
 function renderHome(){
-  var d = new Date(), items = activeItems();
-  var c = { red: 0, yellow: 0, green: 0 };
-  items.forEach(function(it){ c[statusOf(it)]++; });
+  var d = new Date(), all = activeItems().filter(hasDaily);
+  if (ui.cat && !getCat(ui.cat)) ui.cat = null;
   var html = '<header class="home-head"><div><p class="date">' + (d.getMonth() + 1) + '月' + d.getDate() + '日 星期' + WEEK[d.getDay()] + '</p><h1>我家的小倉庫</h1></div><span class="ver">' + APP_VERSION + '</span></header>';
-  if (!items.length){
+  if (!all.length){
     return html + '<div class="empty">' + artSvg('box', 96) + '<h2>倉庫還是空的</h2><p>先新增一樣家裡常用的東西吧！<br>例如雞蛋、衛生紙、醬油。</p>' +
-      '<button class="btn primary" data-act="nav" data-id="#/new">' + ic('plus') + '新增第一個物品</button></div>';
+      '<button class="btn primary" data-act="nav" data-id="#/new">' + ic('plus') + '新增第一個物品</button>' +
+      (activeItems().length ? '<p style="margin:14px 0 0">只放緊急包的物品在「緊急」分頁。</p>' : '') + '</div>';
   }
+  var cats = sortedCats();
+  if (cats.length > 1){
+    html += '<div class="cat-chips" role="group" aria-label="依分類篩選"><button class="cchip all' + (!ui.cat ? ' on' : '') + '" data-act="cat" data-id="">全部</button>' +
+      cats.map(function(c){ return '<button class="cchip' + (ui.cat === c.id ? ' on' : '') + '" data-act="cat" data-id="' + esc(c.id) + '" aria-pressed="' + (ui.cat === c.id) + '">' + artSvg(c.art, 26) + esc(c.name) + '</button>'; }).join('') + '</div>';
+  }
+  var scope = all.filter(function(it){ return !ui.cat || it.categoryId === ui.cat; });
+  var c = { red: 0, yellow: 0, green: 0, exp: 0 };
+  scope.forEach(function(it){ c[statusOf(it)]++; if (expAlert(it)) c.exp++; });
+  var chips = [['red', 'cart', '待買'], ['yellow', 'alert', '快用完'], ['green', 'check', '充足']];
+  if (c.exp || ui.filter === 'exp') chips.push(['exp', 'clock', '即將到期']);
   html += '<div class="summary" role="group" aria-label="依狀態篩選">' +
-    ['red', 'yellow', 'green'].map(function(s){
-      var icon = s === 'red' ? 'cart' : s === 'yellow' ? 'alert' : 'check';
-      return '<button class="chip c-' + s + (ui.filter === s ? ' on' : '') + '" data-act="filter" data-id="' + s + '" aria-pressed="' + (ui.filter === s) + '">' + ic(icon, 'ic-sm') + STATUS[s].label + ' <b>' + c[s] + '</b></button>';
+    chips.map(function(x){
+      return '<button class="chip c-' + x[0] + (ui.filter === x[0] ? ' on' : '') + '" data-act="filter" data-id="' + x[0] + '" aria-pressed="' + (ui.filter === x[0]) + '">' + ic(x[1], 'ic-sm') + x[2] + ' <b>' + c[x[0]] + '</b></button>';
     }).join('') + '</div>';
-  if (ui.filter) html += '<div class="filter-note"><span>只顯示「' + STATUS[ui.filter].label + '」的物品</span><button class="link-btn" data-act="filter" data-id="' + ui.filter + '">顯示全部</button></div>';
+  if (ui.filter) html += '<div class="filter-note"><span>只顯示「' + (ui.filter === 'exp' ? '即將到期' : STATUS[ui.filter].label) + '」的物品</span><button class="link-btn" data-act="filter" data-id="' + ui.filter + '">顯示全部</button></div>';
   var shown = 0;
-  sortedCats().forEach(function(cat){
-    var list = items.filter(function(it){ return it.categoryId === cat.id && (!ui.filter || statusOf(it) === ui.filter); }).sort(byStatusThenName);
+  cats.forEach(function(cat){
+    if (ui.cat && cat.id !== ui.cat) return;
+    var list = all.filter(function(it){ return it.categoryId === cat.id && passFilter(it); }).sort(byStatusThenName);
     if (ui.filter && !list.length) return;
-    var total = items.filter(function(it){ return it.categoryId === cat.id; }).length;
+    var total = all.filter(function(it){ return it.categoryId === cat.id; }).length;
     html += '<section class="cat-sec"><div class="cat-head">' + catArt(cat, 36) + '<h2>' + esc(cat.name) + '</h2><span class="count">' + total + ' 項</span></div>';
     if (!list.length) html += '<div class="cat-empty"><span>這個分類還沒有物品</span><button class="btn sm" data-act="nav" data-id="#/new/' + esc(cat.id) + '">' + ic('plus', 'ic-sm') + '新增</button></div>';
     html += list.map(cardHtml).join('') + '</section>';
     shown += list.length;
   });
-  var orphans = items.filter(function(it){ return !getCat(it.categoryId) && (!ui.filter || statusOf(it) === ui.filter); });
-  if (orphans.length){
-    html += '<section class="cat-sec"><div class="cat-head">' + catArt(null, 36) + '<h2>未分類</h2><span class="count">' + orphans.length + ' 項</span></div>' + orphans.sort(byStatusThenName).map(cardHtml).join('') + '</section>';
-    shown += orphans.length;
+  if (!ui.cat){
+    var orphans = all.filter(function(it){ return !getCat(it.categoryId) && passFilter(it); });
+    if (orphans.length){
+      html += '<section class="cat-sec"><div class="cat-head">' + catArt(null, 36) + '<h2>未分類</h2><span class="count">' + orphans.length + ' 項</span></div>' + orphans.sort(byStatusThenName).map(cardHtml).join('') + '</section>';
+      shown += orphans.length;
+    }
   }
-  if (ui.filter && !shown) html += '<div class="empty"><p>目前沒有「' + STATUS[ui.filter].label + '」的物品</p></div>';
+  if (ui.filter && !shown) html += '<div class="empty"><p>目前沒有符合篩選的物品</p></div>';
   return html;
 }
 
 /* ================= 待買清單 ================= */
+function catOrder(a, b){
+  var ca = getCat(a.categoryId), cb = getCat(b.categoryId);
+  return ((ca ? ca.order : 99) - (cb ? cb.order : 99)) || a.name.localeCompare(b.name, 'zh-Hant');
+}
+function emBuyDetail(it, e){
+  var u = it.unit, parts = ['有效 ' + e.eff + '／目標 ' + it.emergency.target];
+  if (e.soon) parts.push(e.soon + ' ' + u + ' ' + fmtYmd(e.firstSoon.exp) + ' 起到期');
+  if (e.expired) parts.push(e.expired + ' ' + u + '已過期');
+  return parts.join(' · ');
+}
+function emBuyWhy(e, it){
+  var why = [];
+  if (e.eff - e.soon < it.emergency.target) why.push('補到目標');
+  if (e.soon) why.push('換新');
+  return why.join('＋');
+}
 function renderBuy(){
-  var list = buyItems().sort(function(a, b){
-    var ca = getCat(a.categoryId), cb = getCat(b.categoryId);
-    return ((ca ? ca.order : 99) - (cb ? cb.order : 99)) || a.name.localeCompare(b.name, 'zh-Hant');
-  });
-  var html = '<header class="sub-head"><h1>待買清單 · ' + list.length + ' 項</h1>' +
-    (list.length ? '<button class="btn sm" data-act="share">' + ic('share', 'ic-sm') + '分享清單</button>' : '') + '</header>' +
-    '<p class="hint">數量小於或等於紅線會自動加入；補到超過紅線才會移出。</p>';
-  if (!list.length) return html + '<div class="empty">' + artSvg('plant', 96) + '<h2>目前沒有要買的東西</h2><p>家裡的庫存都還夠用。</p></div>';
-  html += list.map(function(it){
-    var cat = getCat(it.categoryId), since = redSince(it), need = needToLeave(it);
-    return '<div class="buy-row">' + catArt(cat, 32) +
-      '<div class="buy-main" data-open="' + esc(it.id) + '"><b>' + esc(it.name) + '</b>' +
-      '<small>' + (it.mode === 'stock' ? (it.inUse ? '使用中 1 · ' : '沒有開封的 · ') + '備品 ' + it.spare : '剩 ' + it.quantity) + ' ' + esc(it.unit) + ' · 紅線 ' + it.redLine + (since ? ' · ' + fmtDate(since) + ' 起' : '') + '</small>' +
-      '<span class="buy-need">' + ic('cart', 'ic-sm') + ' 至少補 ' + need + ' ' + esc(it.unit) + '</span></div>' +
-      '<button class="btn sm b-restock" data-act="restock" data-id="' + esc(it.id) + '">' + ic('check', 'ic-sm') + '已買到</button></div>';
-  }).join('');
+  var list = buyItems().sort(catOrder), emList = emBuyItems().sort(catOrder);
+  var total = list.length + emList.length;
+  var html = '<header class="sub-head"><h1>待買清單 · ' + total + ' 項</h1>' +
+    (total ? '<button class="btn sm" data-act="share">' + ic('share', 'ic-sm') + '分享清單</button>' : '') + '</header>';
+  if (!total) return html + '<p class="hint">數量小於或等於紅線會自動加入；補到超過紅線才會移出。</p><div class="empty">' + artSvg('plant', 96) + '<h2>目前沒有要買的東西</h2><p>家裡的庫存都還夠用。</p></div>';
+  if (list.length){
+    html += '<h2 class="sec-title">' + ic('home') + '日常 · ' + list.length + ' 項</h2><p class="hint">數量 ≤ 紅線會自動加入；補到超過紅線才會移出。</p>';
+    html += list.map(function(it){
+      var cat = getCat(it.categoryId), since = redSince(it), need = needToLeave(it);
+      return '<div class="buy-row">' + catArt(cat, 32) +
+        '<div class="buy-main" data-open="' + esc(it.id) + '"><b>' + esc(it.name) + '</b>' +
+        '<small>' + (it.mode === 'stock' ? (it.inUse ? '使用中 1 · ' : '沒有開封的 · ') + '備品 ' + it.spare : '剩 ' + it.quantity) + ' ' + esc(it.unit) + ' · 紅線 ' + it.redLine + (since ? ' · ' + fmtDate(since) + ' 起' : '') + '</small>' +
+        '<span class="buy-need">' + ic('cart', 'ic-sm') + ' 至少補 ' + need + ' ' + esc(it.unit) + '</span></div>' +
+        '<button class="btn sm b-restock" data-act="restock" data-id="' + esc(it.id) + '">' + ic('check', 'ic-sm') + '已買到</button></div>';
+    }).join('');
+  }
+  if (emList.length){
+    html += '<h2 class="sec-title">' + ic('sos') + '緊急備品 · ' + emList.length + ' 項</h2><p class="hint">有效數量 ≤ 紅線，或 ' + db.settings.warnDays + ' 天內到期／已過期要換新時加入。新的補進緊急包後，把舊的「調用到日常」先用掉或丟棄，這一項就會消失。</p>';
+    html += emList.map(function(it){
+      var cat = getCat(it.categoryId), e = emBuy(it);
+      return '<div class="buy-row">' + catArt(cat, 32) +
+        '<div class="buy-main" data-open="' + esc(it.id) + '"><b>' + esc(it.name) + '</b>' +
+        '<small>' + esc(emBuyDetail(it, e)) + '</small>' +
+        '<span class="buy-need">' + ic('cart', 'ic-sm') + ' 建議買 ' + e.need + ' ' + esc(it.unit) + '（' + emBuyWhy(e, it) + '）</span></div>' +
+        '<button class="btn sm b-restock" data-act="em-restock" data-id="' + esc(it.id) + '" data-n="' + e.need + '">' + ic('check', 'ic-sm') + '已買到</button></div>';
+    }).join('');
+  }
   return html;
 }
 function buyText(){
-  var d = new Date(), list = buyItems();
+  var d = new Date(), list = buyItems(), emList = emBuyItems().sort(catOrder);
   var lines = ['🛒 待買清單（' + (d.getMonth() + 1) + '/' + d.getDate() + '）'];
   sortedCats().concat([null]).forEach(function(cat){
     var sub = list.filter(function(it){ return cat ? it.categoryId === cat.id : !getCat(it.categoryId); });
@@ -885,6 +1434,11 @@ function buyText(){
       lines.push('・' + it.name + ' 至少 ' + needToLeave(it) + ' ' + it.unit + '（' + (it.mode === 'stock' ? '備品 ' + it.spare : '剩 ' + it.quantity) + '）');
     });
   });
+  if (emList.length){
+    lines.push('');
+    lines.push('【🆘 緊急備品】');
+    emList.forEach(function(it){ var e = emBuy(it); lines.push('・' + it.name + ' ' + e.need + ' ' + it.unit + '（' + emBuyWhy(e, it) + '）'); });
+  }
   return lines.join('\n');
 }
 function shareBuy(){
@@ -903,6 +1457,98 @@ function showCopySheet(text){
     '<div style="margin-top:12px"><button class="btn block ghost" data-close>關閉</button></div>');
 }
 
+/* ================= 緊急備品區 ================= */
+function checkState(){
+  var s = db.settings;
+  if (!s.lastCheckAt) return { due: true, never: true };
+  var next = addMonths(s.lastCheckAt, s.checkMonths), left = daysUntil(next);
+  return { due: left <= 0, next: next, left: left };
+}
+function checkBanner(){
+  var c = checkState(), s = db.settings;
+  var title = c.never ? '還沒檢查過緊急備品' : c.due ? '該檢查緊急備品了' : '下次檢查：' + fmtT(c.next);
+  var sub = c.never ? '建議現在做一次，順便補上每一包的效期' : '上次檢查 ' + fmtT(s.lastCheckAt) + ' · 每 ' + s.checkMonths + ' 個月' + (c.due ? ' · 已過 ' + (-c.left) + ' 天' : ' · 剩 ' + c.left + ' 天');
+  return '<div class="check-banner' + (c.due ? ' due' : '') + '">' + ic('adjust') + '<div class="grow"><b>' + title + '</b>' + sub + '</div>' +
+    '<button class="btn sm ' + (c.due ? 'primary' : '') + '" data-act="nav" data-id="#/check">開始檢查</button></div>';
+}
+function emWarnNotes(it){
+  var e = emInfo(it), u = esc(it.unit), h = '';
+  if (e.expired) h += noteLine('bad', 'alert', '已過期 ' + e.expired + ' ' + u + '，不算在有效數量裡 · 請丟棄或調用');
+  if (e.soon) h += noteLine('warn', 'clock', e.soon + ' ' + u + ' 在 ' + warnDaysOf(it) + ' 天內到期（最早 ' + fmtYmd(e.firstSoon.exp) + '）· 要換新');
+  if (e.undated) h += noteLine('mut', 'cal', '未標效期 ' + e.undated + ' ' + u + ' · 檢查時補上日期');
+  return h;
+}
+function batchChips(it, pool, max){
+  var w = warnDaysOf(it), list = batchesOf(it, pool);
+  if (!list.length) return '';
+  var h = list.slice(0, max).map(function(b){ return '<span class="bchip ' + expClass(b.exp, w) + '">' + b.qty + ' · ' + (b.exp ? fmtYmd(b.exp) : '未標效期') + '</span>'; }).join('');
+  if (list.length > max) h += '<span class="bchip">還有 ' + (list.length - max) + ' 批</span>';
+  return '<div class="batch-chips">' + h + '</div>';
+}
+function emActs(it){
+  var id = esc(it.id), e = emInfo(it);
+  return '<div class="acts three"><button class="btn b-restock" data-act="em-restock" data-id="' + id + '">' + ic('restock') + '補貨</button>' +
+    (hasDaily(it)
+      ? '<button class="btn b-transfer' + (e.total ? '' : ' dim') + '" data-act="em-transfer" data-id="' + id + '">' + ic('move') + '調用到日常</button>'
+      : '<button class="btn b-minus' + (e.total ? '' : ' dim') + '" data-act="em-use" data-id="' + id + '">' + ic('minus') + '用掉</button>') + '</div>';
+}
+function emCard(it){
+  var st = emStatus(it), e = emInfo(it), cat = getCat(it.categoryId);
+  return '<article class="card st-' + st + '"><div class="card-top" data-open="' + esc(it.id) + '"><div class="card-title"><h3>' + esc(it.name) + '</h3>' +
+    '<div class="meta">' + esc(cat ? cat.name : '未分類') + (it.location ? ' · ' + ic('pin', 'ic-sm') + esc(it.location) : '') + (hasDaily(it) ? '' : ' · 只放緊急包') + '</div></div>' + pill(st, EM_LABEL[st]) + '</div>' +
+    '<div class="em-count" data-open="' + esc(it.id) + '">有效 <b>' + e.eff + '</b>／目標 ' + it.emergency.target + ' ' + esc(it.unit) + ' · 紅線 ' + it.emergency.redLine + '</div>' +
+    emWarnNotes(it) + batchChips(it, 'emergency', 4) + emActs(it) + '</article>';
+}
+function renderEmergency(){
+  var list = activeItems().filter(hasEm).sort(function(a, b){
+    var r = { red: 0, yellow: 1, green: 2 };
+    return (r[emStatus(a)] - r[emStatus(b)]) || a.name.localeCompare(b.name, 'zh-Hant');
+  });
+  var html = '<header class="sub-head"><h1>緊急備品 · ' + list.length + ' 項</h1><button class="btn sm" data-act="nav" data-id="#/new/em">' + ic('plus', 'ic-sm') + '新增</button></header>';
+  if (!list.length){
+    return html + '<div class="empty">' + artSvg('kit', 96) + '<h2>還沒有緊急備品</h2><p>例如礦泉水、乾燥飯、手電筒電池。<br>已經有的日常物品，可以在物品頁按「編輯資料」勾選「也是緊急備品」。</p>' +
+      '<button class="btn primary" data-act="nav" data-id="#/new/em">' + ic('plus') + '新增緊急備品</button></div>';
+  }
+  html += checkBanner();
+  html += '<p class="hint">有效數量 = 還沒過期的＋未標效期的。燈號：≥ 目標是足夠、介於紅線和目標之間是未達目標、≤ 紅線是待補。</p>';
+  html += list.map(emCard).join('');
+  return html;
+}
+function renderCheck(){
+  var list = activeItems().filter(hasEm).sort(catOrder);
+  var done = list.filter(function(it){ return ui.checked[it.id]; }).length;
+  var html = '<header class="sub-head"><button class="icon-btn" data-act="back" aria-label="返回">' + ic('back') + '</button><h1>緊急備品檢查</h1></header>' +
+    '<p class="hint">打開緊急包，逐項核對數量和每一包的效期：數量不對就修改那一批、找到沒記到的就「新增一批」、快到期的「調用到日常」先用掉。每一項確認好就打勾。</p>';
+  if (!list.length) return html + '<div class="empty"><p>還沒有緊急備品。</p></div>';
+  html += list.map(function(it){
+    var ok = !!ui.checked[it.id], st = emStatus(it), e = emInfo(it), w = warnDaysOf(it);
+    var rows = batchesOf(it, 'emergency').map(function(b){
+      return '<div class="b-row"><div class="grow"><b>' + b.qty + ' ' + esc(it.unit) + '</b><small class="' + expClass(b.exp, w) + '">' + esc(expText(b.exp)) + '</small></div>' +
+        '<button class="mini" data-act="batch" data-id="' + esc(it.id) + '" data-bid="' + esc(b.id) + '" aria-label="修改這批">' + ic('edit', 'ic-sm') + '</button></div>';
+    }).join('') || '<p class="hint" style="margin:6px 0">目前 0 ' + esc(it.unit) + '</p>';
+    return '<section class="panel ck-item' + (ok ? ' done' : '') + '"><h2>' + esc(it.name) + ' ' + pill(st, EM_LABEL[st]) + '</h2>' +
+      '<div class="hint" style="margin:0 0 6px">有效 ' + e.eff + '／目標 ' + it.emergency.target + ' ' + esc(it.unit) + '</div>' + rows +
+      '<div class="grid2" style="margin-top:10px"><button class="btn sm" data-act="batch-add" data-id="' + esc(it.id) + '">' + ic('plus', 'ic-sm') + '新增一批</button>' +
+      (hasDaily(it) ? '<button class="btn sm" data-act="em-transfer" data-id="' + esc(it.id) + '">' + ic('move', 'ic-sm') + '調用到日常</button>' : '<button class="btn sm" data-act="em-use" data-id="' + esc(it.id) + '">' + ic('minus', 'ic-sm') + '用掉</button>') + '</div>' +
+      '<button class="btn block ' + (ok ? 'b-plus' : 'ghost') + '" data-act="check-toggle" data-id="' + esc(it.id) + '" style="margin-top:10px">' + ic(ok ? 'check' : 'done') + (ok ? '已確認' : '這項確認好了') + '</button></section>';
+  }).join('');
+  html += '<button class="btn primary block" data-act="check-finish">' + ic('check') + '完成檢查（已確認 ' + done + '／' + list.length + '）</button>';
+  return html;
+}
+function finishCheck(){
+  var list = activeItems().filter(hasEm), done = list.filter(function(it){ return ui.checked[it.id]; }).length;
+  function fin(){
+    db.settings.lastCheckAt = now();
+    db.checks.push({ at: now(), total: list.length, ok: done });
+    persist(); ui.checked = {};
+    go('#/emergency');
+    showToast('檢查完成，下次是 ' + fmtT(addMonths(now(), db.settings.checkMonths)), null, 3500);
+  }
+  if (done < list.length) openConfirm({ title: '還有 ' + (list.length - done) + ' 項沒打勾', icon: 'adjust', okText: '還是完成',
+    text: '完成後會記錄今天是檢查日，下次提醒在 ' + db.settings.checkMonths + ' 個月後。' }, fin);
+  else fin();
+}
+
 /* ================= 物品頁 ================= */
 var ACTION_INFO = {
   create:     { icon: 'create',  label: '建立' },
@@ -912,66 +1558,122 @@ var ACTION_INFO = {
   finish:     { icon: 'done',    label: '用完' },
   restock:    { icon: 'restock', label: '補貨' },
   adjust:     { icon: 'adjust',  label: '盤點校正' },
-  switchMode: { icon: 'swap',    label: '切換模式' }
+  switchMode: { icon: 'swap',    label: '切換模式' },
+  emRestock:  { icon: 'sos',     label: '緊急補貨' },
+  transfer:   { icon: 'move',    label: '調用' },
+  emUse:      { icon: 'sos',     label: '用掉緊急' },
+  discard:    { icon: 'trash',   label: '丟棄' },
+  editBatch:  { icon: 'cal',     label: '改效期' },
+  editOpen:   { icon: 'cal',     label: '改開封日' }
 };
+function expPart(l){
+  var dated = (l.bch || []).filter(function(c){ return c.d > 0 && c.exp; }).map(function(c){ return fmtYmd(c.exp); });
+  return dated.length ? ' · 效期 ' + dated.join('、') : '';
+}
 function logLabel(l, unit){
+  var em = l.pool === 'emergency' ? '緊急' : '';
   switch (l.action){
     case 'consume': return '用掉 ' + (-l.dQty) + ' ' + unit;
-    case 'add': return '入庫 +' + l.dQty + ' ' + unit;
+    case 'add': return '入庫 +' + l.dQty + ' ' + unit + expPart(l);
     case 'open': return '開封 1 ' + unit + '（備品 → 使用中）';
     case 'finish': return '用完 1 ' + unit;
-    case 'restock': return '補貨 +' + l.dSpare + ' ' + unit;
+    case 'restock': return '補貨 +' + l.dSpare + ' ' + unit + expPart(l);
+    case 'emRestock': return '緊急備品補貨 +' + l.n + ' ' + unit + expPart(l);
+    case 'transfer': return '從緊急調用 ' + l.n + ' ' + unit + ' 到日常（不算消耗）';
+    case 'emUse': return '用掉緊急備品 ' + l.n + ' ' + unit;
+    case 'discard': return '丟棄' + em + ' ' + l.n + ' ' + unit + '（' + (l.exp ? fmtYmd(l.exp) + ' 到期' : '未標效期') + '，不算消耗）';
+    case 'editBatch': return '修改' + em + '效期：' + (l.fromExp ? fmtYmd(l.fromExp) : '未標') + ' → ' + (l.toExp ? fmtYmd(l.toExp) : '未標');
+    case 'editOpen': return '開封日期改成 ' + fmtDate(l.openedAt);
     case 'adjust':
+      if (l.pool === 'emergency') return '緊急備品校正：' + l.emBefore + ' → ' + l.emAfter + ' ' + unit;
       return '盤點校正：' + (l.mode === 'stock' ? stateText('stock', l.before, unit) : l.before.quantity + ' ' + unit) + ' → ' + (l.mode === 'stock' ? stateText('stock', l.after, unit) : l.after.quantity + ' ' + unit);
     case 'switchMode':
       return '切換模式：' + MODE_LABEL[l.from] + ' → ' + MODE_LABEL[l.to] + (l.redLineFrom !== l.redLineTo ? '（紅線 ' + l.redLineFrom + ' → ' + l.redLineTo + '）' : '');
-    case 'create': return '建立物品（' + MODE_LABEL[l.mode] + '）';
+    case 'create': return '建立物品' + (l.daily === false ? '（只放緊急包）' : '（' + MODE_LABEL[l.mode] + '）');
   }
   return l.action;
+}
+function logAfter(l, it){
+  var parts = [];
+  if (hasDaily(it)) parts.push(stateText(l.mode, l.after, it.unit));
+  if (hasEm(it) && l.emAfter != null) parts.push('緊急 ' + l.emAfter);
+  return parts.join(' · ');
 }
 function statHtml(k, ready, value, note, waitText){
   return '<div class="stat"><div class="k">' + k + '</div>' +
     (ready ? '<div class="v">' + value + '</div><div class="note">' + note + '</div>'
            : '<div class="wait">' + ic('clock', 'ic-sm') + '累積資料中</div><div class="note">' + waitText + '</div>') + '</div>';
 }
+function batchRows(it, pool){
+  var w = warnDaysOf(it), u = esc(it.unit);
+  return batchesOf(it, pool).map(function(b){
+    return '<div class="b-row"><div class="grow"><b>' + b.qty + ' ' + u + '</b><small class="' + expClass(b.exp, w) + '">' + esc(expText(b.exp)) + '</small></div>' +
+      '<button class="mini" data-act="batch" data-id="' + esc(it.id) + '" data-bid="' + esc(b.id) + '" aria-label="修改這批">' + ic('edit', 'ic-sm') + '</button></div>';
+  }).join('');
+}
 function renderDetail(id){
   var it = getItem(id);
   if (!it) return '<header class="sub-head"><button class="icon-btn" data-act="back" aria-label="返回">' + ic('back') + '</button><h1>找不到物品</h1></header><div class="empty"><p>這個物品可能已經被刪除。</p></div>';
-  var cat = getCat(it.categoryId), st = statusOf(it), u = esc(it.unit);
-  var html = '<header class="sub-head"><button class="icon-btn" data-act="back" aria-label="返回">' + ic('back') + '</button><h1>' + esc(it.name) + '</h1>' + pill(st) + '</header>';
+  var cat = getCat(it.categoryId), u = esc(it.unit), daily = hasDaily(it);
+  var st = daily ? statusOf(it) : emStatus(it);
+  var html = '<header class="sub-head"><button class="icon-btn" data-act="back" aria-label="返回">' + ic('back') + '</button><h1>' + esc(it.name) + '</h1>' + pill(st, daily ? null : EM_LABEL[st]) + '</header>';
   if (it.archived) html += '<div class="warn-banner">這個物品已封存，不會顯示在首頁和待買清單。<button class="btn sm" data-act="unarchive" data-id="' + esc(it.id) + '">取消封存</button></div>';
   html += '<section class="card st-' + st + '"><div class="detail-top">' + catArt(cat, 44) + '<div class="detail-info">' +
-    '<div>' + esc(cat ? cat.name : '未分類') + ' · ' + MODE_LABEL[it.mode] + '</div>' +
+    '<div>' + esc(cat ? cat.name : '未分類') + ' · ' + (daily ? MODE_LABEL[it.mode] : '只放緊急包') + (hasEm(it) && daily ? ' · 🆘 緊急備品' : '') + '</div>' +
     (it.location ? '<div>' + ic('pin', 'ic-sm') + esc(it.location) + '</div>' : '') + '</div></div>' +
-    (it.mode === 'stock' ? stockBody(it) : countBody(it)) +
-    '<p class="rl-line">' + (it.mode === 'stock' ? '備品紅線 ' + it.redLine + '：備品 ≤ ' + it.redLine + ' ' + u + ' 時加入待買清單' : '紅線 ' + it.redLine + '：數量 ≤ ' + it.redLine + ' ' + u + ' 時加入待買清單') + '</p></section>';
+    (daily ? (it.mode === 'stock' ? stockBody(it) : countBody(it)) +
+      '<p class="rl-line">' + (it.mode === 'stock' ? '備品紅線 ' + it.redLine + '：備品 ≤ ' + it.redLine + ' ' + u + ' 時加入待買清單' : '紅線 ' + it.redLine + '：數量 ≤ ' + it.redLine + ' ' + u + ' 時加入待買清單') + '</p>' : '') + '</section>';
 
-  // 使用速度
-  html += '<section class="panel"><h2>' + ic('clock') + '使用速度</h2>';
-  if (it.mode === 'count'){
-    var cs = countStats(it);
-    html += statHtml('消耗估算', cs.ready,
-      '平均每天約 ' + fmtNum(cs.perDay) + ' ' + u + '<br>大約每 ' + fmtDays(cs.every) + ' 天用掉 1 ' + u,
-      '根據你按「用掉」記下的用量推算（涵蓋 ' + fmtNum(cs.days) + ' 天、' + cs.used + ' ' + u + '）。沒按到的不會算進去，可能不完整。',
-      '需要至少 ' + MIN_DAYS + ' 天、' + MIN_CONSUMES + ' 次「用掉」紀錄。目前：' + Math.floor(cs.days) + ' 天、' + cs.times + ' 次。');
-  } else {
-    var ss = stockStats(it);
-    html += statHtml('一' + u + '用多久', ss.ready,
-      '一' + u + '大約用 ' + fmtDays(ss.avgDays) + ' 天',
-      '根據 ' + ss.packs + ' ' + u + '從「開封」到「用完」的紀錄推算。',
-      '需要至少 ' + MIN_PACKS + ' ' + u + '從「開封」記到「用完」。' + (ss.opening ? '目前這' + u + '從 ' + fmtDate(ss.opening) + ' 開封，用完時記得按「用完」。' : ''));
+  // 開封資訊
+  if (daily && it.mode === 'stock' && it.inUse){
+    html += '<section class="panel"><h2>' + ic('open') + '開封中的這' + u + '</h2>' +
+      noteLine('', 'clock', openedDaysText(it) + (it.openedAt ? '（' + fmtT(it.openedAt) + ' 開封）' : '')) + openNotes(it, true) +
+      '<div class="grid2" style="margin-top:12px"><button class="btn sm" data-act="edit-open" data-id="' + esc(it.id) + '">' + ic('cal', 'ic-sm') + '修改開封日期</button>' +
+      '<button class="btn sm" data-act="nav" data-id="#/edit/' + esc(it.id) + '">' + ic('edit', 'ic-sm') + '設定開封後期限</button></div></section>';
   }
-  var bf = buyFreq(it);
-  html += statHtml('購買頻率', bf.ready,
-    '大約每 ' + fmtDays(bf.every) + ' 天買一次',
-    '依補貨／入庫的日期計算，只當「多久買一次」的參考，不代表用量。',
-    '需要至少 ' + MIN_BUY_DAYS + ' 天有補貨或入庫紀錄。目前：' + bf.n + ' 天。');
-  html += '</section>';
+  // 日常效期批次
+  if (daily){
+    var rows = batchRows(it, 'daily');
+    html += '<section class="panel"><h2>' + ic('cal') + '效期批次' + (it.mode === 'stock' ? '（未開封備品）' : '') + '</h2>' +
+      (rows || '<p class="hint" style="margin:0">目前沒有庫存。</p>') +
+      '<p class="fhint" style="margin:8px 0 0">用掉、開封時會先扣最早到期的；拿錯了可以按鉛筆修改。提醒天數：到期前 ' + warnDaysOf(it) + ' 天。</p></section>';
+  }
+  // 緊急備品
+  if (hasEm(it)){
+    var est = emStatus(it), e = emInfo(it);
+    html += '<section class="panel"><h2>' + ic('sos') + '緊急備品 ' + pill(est, EM_LABEL[est]) + '</h2>' +
+      '<div class="em-count" style="margin-top:0">有效 <b>' + e.eff + '</b>／目標 ' + it.emergency.target + ' ' + u + ' · 紅線 ' + it.emergency.redLine + '</div>' +
+      emWarnNotes(it) + '<div style="margin-top:8px">' + (batchRows(it, 'emergency') || '<p class="hint" style="margin:0">目前 0 ' + u + '</p>') + '</div>' +
+      emActs(it) + '</section>';
+  }
+  // 使用速度
+  if (daily){
+    html += '<section class="panel"><h2>' + ic('clock') + '使用速度</h2>';
+    if (it.mode === 'count'){
+      var cs = countStats(it);
+      html += statHtml('消耗估算', cs.ready,
+        '平均每天約 ' + fmtNum(cs.perDay) + ' ' + u + '<br>大約每 ' + fmtDays(cs.every) + ' 天用掉 1 ' + u,
+        '根據你按「用掉」記下的用量推算（涵蓋 ' + fmtNum(cs.days) + ' 天、' + cs.used + ' ' + u + '）。沒按到的不會算進去，可能不完整。',
+        '需要至少 ' + MIN_DAYS + ' 天、' + MIN_CONSUMES + ' 次「用掉」紀錄。目前：' + Math.floor(cs.days) + ' 天、' + cs.times + ' 次。');
+    } else {
+      var ss = stockStats(it);
+      html += statHtml('一' + u + '用多久', ss.ready,
+        '一' + u + '大約用 ' + fmtDays(ss.avgDays) + ' 天',
+        '根據 ' + ss.packs + ' ' + u + '從「開封」到「用完」的紀錄推算。',
+        '需要至少 ' + MIN_PACKS + ' ' + u + '從「開封」記到「用完」。' + (ss.opening ? '目前這' + u + '從 ' + fmtDate(ss.opening) + ' 開封，用完時記得按「用完」。' : ''));
+    }
+    var bf = buyFreq(it);
+    html += statHtml('購買頻率', bf.ready,
+      '大約每 ' + fmtDays(bf.every) + ' 天買一次',
+      '依日常補貨／入庫的日期計算，只當「多久買一次」的參考，不代表用量。',
+      '需要至少 ' + MIN_BUY_DAYS + ' 天有補貨或入庫紀錄。目前：' + bf.n + ' 天。');
+    html += '</section>';
+  }
 
   // 管理
   html += '<section class="panel"><h2>' + ic('settings') + '管理</h2><div class="grid2">' +
-    '<button class="btn" data-act="adjust" data-id="' + esc(it.id) + '">' + ic('adjust') + '盤點校正</button>' +
-    '<button class="btn" data-act="switch" data-id="' + esc(it.id) + '">' + ic('swap') + '切換模式</button>' +
+    (daily ? '<button class="btn" data-act="adjust" data-id="' + esc(it.id) + '">' + ic('adjust') + '盤點校正</button>' +
+             '<button class="btn" data-act="switch" data-id="' + esc(it.id) + '">' + ic('swap') + '切換模式</button>' : '') +
     '<button class="btn" data-act="nav" data-id="#/edit/' + esc(it.id) + '">' + ic('edit') + '編輯資料</button>' +
     (it.archived ? '<button class="btn" data-act="unarchive" data-id="' + esc(it.id) + '">' + ic('archive') + '取消封存</button>'
                  : '<button class="btn" data-act="archive" data-id="' + esc(it.id) + '">' + ic('archive') + '封存</button>') +
@@ -983,7 +1685,7 @@ function renderDetail(id){
     logs.slice(0, ui.histShow).map(function(l){
       var info = ACTION_INFO[l.action] || { icon: 'list' };
       return '<li class="h-row"><span class="h-ic">' + ic(info.icon, 'ic-sm') + '</span><div class="h-main"><b>' + esc(logLabel(l, it.unit)) + '</b><small>' + fmtDateTime(l.at) + '</small></div>' +
-        '<span class="h-after">' + esc(stateText(l.mode, l.after, it.unit)) + '</span></li>';
+        '<span class="h-after">' + esc(logAfter(l, it)) + '</span></li>';
     }).join('') + '</ul>' +
     (logs.length > ui.histShow ? '<button class="btn block ghost" data-act="more" style="margin-top:8px">顯示更多</button>' : '') + '</section>';
   return html;
@@ -991,17 +1693,20 @@ function renderDetail(id){
 
 /* ================= 新增／編輯 ================= */
 var UNITS = ['瓶', '包', '盒', '顆', '捲', '罐', '袋', '個'];
-function renderForm(editId, presetCat){
+function renderForm(editId, preset){
   var it = editId ? getItem(editId) : null;
   if (editId && !it) return renderDetail(editId);
+  var isEmNew = !it && preset === 'em';
   var cats = sortedCats();
-  var catId = it ? it.categoryId : (presetCat && getCat(presetCat) ? presetCat : (cats[0] && cats[0].id));
+  var catId = it ? it.categoryId : (preset && getCat(preset) ? preset : (cats[0] && cats[0].id));
   var mode = it ? it.mode : 'count';
+  var emOn = it ? hasEm(it) : isEmNew, daily = it ? hasDaily(it) : true;
+  var ao = it && it.afterOpen;
   var locs = {};
   db.items.forEach(function(x){ if (x.location) locs[x.location] = 1; });
-  var html = '<header class="sub-head"><button class="icon-btn" data-act="back" aria-label="返回">' + ic('back') + '</button><h1>' + (it ? '編輯：' + esc(it.name) : '新增物品') + '</h1></header>' +
-    '<form id="item-form" class="form m-' + mode + '" novalidate autocomplete="off">' +
-    '<label class="field"><span>名稱</span><input class="input" name="f-name" maxlength="30" placeholder="例如：雞蛋、醬油" value="' + esc(it ? it.name : '') + '"></label>' +
+  var html = '<header class="sub-head"><button class="icon-btn" data-act="back" aria-label="返回">' + ic('back') + '</button><h1>' + (it ? '編輯：' + esc(it.name) : isEmNew ? '新增緊急備品' : '新增物品') + '</h1></header>' +
+    '<form id="item-form" class="form m-' + mode + (emOn ? ' em-on' : '') + (daily ? '' : ' no-daily') + (ao ? ' ao-on' : '') + '" novalidate autocomplete="off">' +
+    '<label class="field"><span>名稱</span><input class="input" name="f-name" maxlength="30" placeholder="例如：雞蛋、醬油、乾燥飯" value="' + esc(it ? it.name : '') + '"></label>' +
     '<div class="field"><span>分類</span><div class="chips">' +
       (cats.length ? cats.map(function(c){ return '<label class="opt"><input type="radio" name="cat" value="' + esc(c.id) + '"' + (c.id === catId ? ' checked' : '') + '>' + artSvg(c.art, 22) + esc(c.name) + '</label>'; }).join('')
                    : '<span class="fhint">還沒有分類，請先到「設定」新增分類。</span>') +
@@ -1009,23 +1714,49 @@ function renderForm(editId, presetCat){
     '<div class="field"><span>單位</span><div class="chips" style="margin-bottom:8px">' +
       UNITS.map(function(x){ return '<button type="button" class="opt unit-opt" data-unit="' + x + '">' + x + '</button>'; }).join('') + '</div>' +
       '<input class="input" name="f-unit" maxlength="6" placeholder="或自己輸入，例如：串" value="' + esc(it ? it.unit : '') + '"></div>' +
-    '<label class="field"><span>存放位置（選填）</span><input class="input" name="f-loc" maxlength="20" list="loc-list" placeholder="例如：廚房櫥櫃、浴室櫃" value="' + esc(it ? it.location : '') + '">' +
+    '<label class="field"><span>存放位置（選填）</span><input class="input" name="f-loc" maxlength="20" list="loc-list" placeholder="例如：廚房櫥櫃、玄關防災包" value="' + esc(it ? it.location : '') + '">' +
       '<datalist id="loc-list">' + Object.keys(locs).map(function(l){ return '<option value="' + esc(l) + '">'; }).join('') + '</datalist></label>';
+
+  // 緊急備品
+  html += '<div class="field"><span>緊急備品</span>' +
+    '<label class="toggle-row"><input type="checkbox" id="f-em"' + (emOn ? ' checked' : '') + '><div><b>🆘 這也是緊急備品</b><small>和分類不衝突。緊急的數量、目標、紅線和日常分開算，平常的「用掉」不會動到它。</small></div></label>' +
+    '<div class="sub-box only-em">' +
+      '<label class="toggle-row"><input type="checkbox" id="f-emonly"' + (daily ? '' : ' checked') + '><div><b>只放在緊急包，平常不用</b><small>例如乾燥飯、手電筒電池。不追蹤日常庫存，不會出現在首頁和日常待買。</small></div></label>' +
+      '<div class="field"><span>緊急目標存量</span>' + stepperHtml('f-emt', it ? it.emergency.target || 1 : 6) + '</div>' +
+      '<div class="field"><span>緊急紅線</span>' + stepperHtml('f-emr', it ? it.emergency.redLine : 2) + '<p class="fhint" id="em-hint"></p></div>' +
+      (!it || !hasEm(it) ? '<div class="field"><span>目前緊急數量</span>' + stepperHtml('f-emq', 0) + '<p class="fhint">效期之後可在物品頁或「半年檢查」時一包一包補上。</p></div>' : '') +
+    '</div></div>';
+
+  // 日常
+  html += '<div class="only-daily">';
   if (!it){
-    html += '<div class="field"><span>記錄方式（之後可以在物品頁切換）</span>' +
+    html += '<div class="field"><span>日常記錄方式（之後可以在物品頁切換）</span>' +
       '<label class="mode-card"><input type="radio" name="mode" value="count" checked><div><b>簡單計數</b><small>按 ＋ 入庫、按 − 用掉。適合衛生紙、雞蛋這類一個一個用的東西。</small></div></label>' +
       '<label class="mode-card"><input type="radio" name="mode" value="stock"><div><b>使用中／備品</b><small>以整包為單位，記「開封、用完、補貨」。適合醬油、洗衣球、清潔劑這類慢慢用完的東西。</small></div></label></div>' +
       '<div class="field only-count"><span>目前數量</span>' + stepperHtml('f-qty', 0) + '</div>' +
       '<div class="field only-stock"><span>現在有正在使用（已開封）的嗎？</span><div class="chips">' +
         '<label class="opt"><input type="radio" name="f-inuse" value="1" checked>有，使用中</label><label class="opt"><input type="radio" name="f-inuse" value="0">沒有</label></div></div>' +
       '<div class="field only-stock"><span>未開封備品</span>' + stepperHtml('f-spare', 0) + '</div>';
-  } else {
+  } else if (daily){
     html += '<div class="field"><span>記錄方式與數量</span><div class="readonly-box">' + MODE_LABEL[it.mode] + ' · ' + esc(stateText(it.mode, it, it.unit)) +
       '<br>要改數量請用物品頁的按鈕或「盤點校正」；要改記錄方式請用「切換模式」，這樣歷史才會完整。</div></div>';
+  } else {
+    html += '<div class="field"><span>日常記錄方式</span><div class="readonly-box">取消「只放在緊急包」後，日常會用「' + MODE_LABEL[it.mode] + '」從 0 開始記。</div></div>';
   }
-  html += '<div class="field"><span id="rl-title">紅線（安全庫存）</span>' + stepperHtml('f-red', it ? it.redLine : 1) + '<p class="fhint" id="rl-hint"></p></div>' +
-    '<p class="err" id="f-err" hidden></p>' +
-    '<button type="submit" class="btn primary block">' + ic('check') + (it ? '儲存變更' : '新增物品') + '</button></form>';
+  html += '<div class="field"><span id="rl-title">紅線（安全庫存）</span>' + stepperHtml('f-red', it ? it.redLine : 1) + '<p class="fhint" id="rl-hint"></p></div>';
+  // 開封後期限
+  html += '<div class="field only-stock"><span>開封後能放多久（選填）</span><div class="chips">' +
+    '<label class="opt"><input type="radio" name="ao" value=""' + (!ao ? ' checked' : '') + '>未設定</label>' +
+    '<label class="opt"><input type="radio" name="ao" value="label"' + (ao && ao.kind === 'label' ? ' checked' : '') + '>' + ic('pkg', 'ic-sm') + '包裝標示</label>' +
+    '<label class="opt"><input type="radio" name="ao" value="personal"' + (ao && ao.kind === 'personal' ? ' checked' : '') + '>' + ic('bell', 'ic-sm') + '個人提醒</label></div>' +
+    '<div class="only-ao" style="margin-top:10px"><div class="row2"><input class="input" type="number" inputmode="numeric" min="1" id="f-aon" value="' + (ao ? ao.n : '') + '" placeholder="數字">' +
+    '<select class="input" id="f-aou"><option value="month"' + (ao && ao.unit === 'month' ? ' selected' : '') + '>個月</option><option value="day"' + (!ao || ao.unit === 'day' ? ' selected' : '') + '>天</option></select></div></div>' +
+    '<p class="fhint" id="ao-hint"></p></div>';
+  html += '</div>';
+  // 到期提醒
+  html += '<label class="field"><span>效期提醒：到期前幾天開始提醒（選填）</span><input class="input" type="number" inputmode="numeric" min="0" id="f-warn" placeholder="空白 = 用設定裡的預設 ' + db.settings.warnDays + ' 天" value="' + (it && it.warnDays != null ? it.warnDays : '') + '"></label>';
+  html += '<p class="err" id="f-err" hidden></p>' +
+    '<button type="submit" class="btn primary block">' + ic('check') + (it ? '儲存變更' : '新增') + '</button></form>';
   return html;
 }
 function mountForm(editId){
@@ -1033,14 +1764,22 @@ function mountForm(editId){
   var it = editId ? getItem(editId) : null;
   bindSteppers(f);
   var fName = f.querySelector('[name=f-name]'), fUnit = f.querySelector('[name=f-unit]'), fLoc = f.querySelector('[name=f-loc]');
+  var fEm = f.querySelector('#f-em'), fEmOnly = f.querySelector('#f-emonly');
   function curMode(){ return it ? it.mode : f.querySelector('input[name=mode]:checked').value; }
+  function aoKind(){ return f.querySelector('input[name=ao]:checked').value; }
   function updHint(){
     var m = curMode(), r = Math.max(0, toInt(f.querySelector('#f-red').value, 0));
-    f.className = 'form m-' + m;
+    var em = fEm.checked, daily = !(em && fEmOnly.checked), k = aoKind();
+    f.className = 'form m-' + m + (em ? ' em-on' : '') + (daily ? '' : ' no-daily') + (k ? ' ao-on' : '');
     f.querySelector('#rl-title').textContent = m === 'stock' ? '備品紅線（安全庫存）' : '紅線（安全庫存）';
     f.querySelector('#rl-hint').textContent = m === 'stock'
       ? '看「未開封備品」的數量：備品 ≤ ' + r + ' 時自動加入待買清單。設 0 = 備品用完才提醒；設 1 = 只剩最後 1 個備品就提醒。'
       : '數量 ≤ ' + r + ' 時自動加入待買清單，補到 ' + (r + 1) + ' 以上才移出。';
+    var et = toInt(f.querySelector('#f-emt').value, 0), er = toInt(f.querySelector('#f-emr').value, 0);
+    f.querySelector('#em-hint').textContent = '有效數量 ≥ ' + et + ' 是足夠、' + (er + 1) + '～' + (et - 1) + ' 是未達目標、≤ ' + er + ' 加入待買清單。';
+    f.querySelector('#ao-hint').textContent = k === 'label' ? '照包裝上「開封後 X 內用完」的標示填。'
+      : k === 'personal' ? '你自己想提醒的天數，畫面上會標明是個人提醒、不是包裝建議。'
+      : '沒有資料就維持未設定，app 不會自己估一個期限。';
   }
   function syncUnit(){
     var u = fUnit.value.trim();
@@ -1054,13 +1793,29 @@ function mountForm(editId){
   f.onsubmit = function(e){
     e.preventDefault();
     var err = f.querySelector('#f-err');
+    function fail(m){ err.textContent = m; err.hidden = false; err.scrollIntoView({ block: 'center' }); }
     var name = fName.value.trim(), unit = fUnit.value.trim() || '個';
     var catEl = f.querySelector('input[name=cat]:checked');
     var red = toInt(f.querySelector('#f-red').value, -1);
-    var msg = !name ? '請輸入名稱' : !catEl ? '請選擇分類（可到設定新增）' : red < 0 ? '紅線請輸入 0 以上的整數' : '';
-    if (msg){ err.textContent = msg; err.hidden = false; return; }
+    var em = fEm.checked, daily = !(em && fEmOnly.checked);
+    var et = toInt(f.querySelector('#f-emt').value, -1), er = toInt(f.querySelector('#f-emr').value, -1);
+    var k = aoKind(), aon = toInt(f.querySelector('#f-aon').value, 0), aou = f.querySelector('#f-aou').value;
+    var wv = f.querySelector('#f-warn').value.trim(), warn = wv === '' ? null : toInt(wv, -1);
+    if (!name) return fail('請輸入名稱');
+    if (!catEl) return fail('請選擇分類（可到設定新增）');
+    if (daily && red < 0) return fail('紅線請輸入 0 以上的整數');
+    if (em && et < 1) return fail('緊急目標存量至少要 1');
+    if (em && (er < 0 || er >= et)) return fail('緊急紅線要小於目標存量（目前目標 ' + et + '）');
+    if (k && !(aon > 0)) return fail('開封後期限請填 1 以上的數字，或改回「未設定」');
+    if (warn !== null && warn < 0) return fail('提醒天數請輸入 0 以上的整數');
+    var afterOpen = k ? { kind: k, n: aon, unit: aou } : null;
+    var emergency = { enabled: em, target: em ? et : 0, redLine: em ? er : 0 };
     if (it){
-      it.name = name; it.unit = unit; it.location = fLoc.value.trim(); it.categoryId = catEl.value; it.redLine = red; it.updatedAt = now();
+      if (!em && hasEm(it) && poolSum(it, 'emergency') > 0) return fail('緊急備品還有 ' + poolSum(it, 'emergency') + ' ' + it.unit + '，請先「調用到日常」或丟棄，才能取消緊急備品');
+      if (!daily && hasDaily(it) && (it.quantity || it.inUse || it.spare)) return fail('日常還有庫存，請先用完或盤點校正成 0，才能改成「只放在緊急包」');
+      it.name = name; it.unit = unit; it.location = fLoc.value.trim(); it.categoryId = catEl.value;
+      if (daily) it.redLine = red;
+      it.daily = daily; it.emergency = emergency; it.afterOpen = afterOpen; it.warnDays = warn; it.updatedAt = now();
       persist();
       go('#/item/' + encodeURIComponent(it.id));
       showToast('已儲存「' + it.name + '」', null, 2500);
@@ -1068,24 +1823,29 @@ function mountForm(editId){
     }
     var m = curMode();
     var n = {
-      id: uid(), name: name, categoryId: catEl.value, unit: unit, location: fLoc.value.trim(), mode: m, redLine: red,
-      quantity: m === 'count' ? Math.max(0, toInt(f.querySelector('#f-qty').value, 0)) : 0,
-      inUse: m === 'stock' && f.querySelector('input[name=f-inuse]:checked').value === '1' ? 1 : 0,
-      spare: m === 'stock' ? Math.max(0, toInt(f.querySelector('#f-spare').value, 0)) : 0,
-      createdAt: now(), updatedAt: now(), archived: false
+      id: uid(), name: name, categoryId: catEl.value, unit: unit, location: fLoc.value.trim(), mode: m, redLine: daily ? red : 0,
+      quantity: daily && m === 'count' ? Math.max(0, toInt(f.querySelector('#f-qty').value, 0)) : 0,
+      inUse: daily && m === 'stock' && f.querySelector('input[name=f-inuse]:checked').value === '1' ? 1 : 0,
+      spare: daily && m === 'stock' ? Math.max(0, toInt(f.querySelector('#f-spare').value, 0)) : 0,
+      daily: daily, emergency: emergency, afterOpen: afterOpen, warnDays: warn, batches: [],
+      openedAt: null, openedExp: null, createdAt: now(), updatedAt: now(), archived: false
     };
+    if (n.inUse) n.openedAt = now();
+    var t = begin(n);
+    if (daily) bAdd(t, 'daily', level(n), null);
+    if (em) bAdd(t, 'emergency', Math.max(0, toInt((f.querySelector('#f-emq') || {}).value, 0)), null);
     db.items.push(n);
-    db.logs.push({ id: uid(), itemId: n.id, at: n.createdAt, mode: m, action: 'create', dQty: 0, dInUse: 0, dSpare: 0, before: snap(n), after: snap(n), by: null });
+    db.logs.push({ id: uid(), itemId: n.id, at: n.createdAt, mode: m, action: 'create', dQty: 0, dInUse: 0, dSpare: 0, before: snap(n), after: snap(n), by: null, daily: daily, emBefore: poolSum(n, 'emergency'), emAfter: poolSum(n, 'emergency') });
     persist();
     ui.filter = null;
-    go('#/');
-    showToast('已新增「' + n.name + '」' + (isBuy(n) ? '，目前在紅線以下，已加入待買清單' : ''), null, 3500);
+    go(daily ? '#/' : '#/emergency');
+    showToast('已新增「' + n.name + '」' + (isBuy(n) ? '，目前在紅線以下，已加入待買清單' : emBuy(n) ? '，緊急備品不足，已加入待買清單' : ''), null, 3500);
   };
 }
 
 /* ================= 設定 ================= */
 function renderSettings(){
-  var cats = sortedCats();
+  var cats = sortedCats(), s = db.settings;
   var html = '<header class="sub-head"><h1>設定</h1><span class="ver">' + APP_VERSION + '</span></header>';
   html += '<section class="panel"><h2>' + ic('list') + '分類</h2>' +
     cats.map(function(c, i){
@@ -1096,6 +1856,11 @@ function renderSettings(){
         '<button class="mini" data-act="cat-edit" data-id="' + esc(c.id) + '" aria-label="編輯">' + ic('edit', 'ic-sm') + '</button></div>';
     }).join('') +
     '<button class="btn block ghost" data-act="cat-edit" style="margin-top:10px">' + ic('plus') + '新增分類</button></section>';
+
+  html += '<section class="panel"><h2>' + ic('bell') + '提醒</h2>' +
+    '<div class="field" style="margin-bottom:14px"><span class="flabel">效期：到期前幾天開始提醒（每個物品可另外設）</span>' + stepperHtml('s-warn', s.warnDays) + '</div>' +
+    '<div class="field" style="margin-bottom:6px"><span class="flabel">緊急備品檢查：每幾個月一次</span>' + stepperHtml('s-check', s.checkMonths) + '</div>' +
+    '<p class="hint" style="margin:6px 0 0">單機版的提醒只會顯示在 app 畫面上；之後接上 LINE 會一併放進每週摘要。開封後期限固定在到期前 ' + OPEN_WARN + ' 天提醒。</p></section>';
 
   var archived = db.items.filter(function(it){ return it.archived; });
   if (archived.length){
@@ -1114,16 +1879,37 @@ function renderSettings(){
     '<input type="file" id="import-file" accept="application/json,.json" hidden></section>';
 
   html += '<section class="panel"><h2>' + ic('alert') + '燈號說明</h2>' +
+    '<p class="hint" style="margin:0 0 4px">日常（使用中／備品看的是備品數量）</p>' +
     '<div class="set-row">' + pill('green') + '<div class="grow">數量 ≥ 紅線 + 2</div></div>' +
     '<div class="set-row">' + pill('yellow') + '<div class="grow">數量 = 紅線 + 1</div></div>' +
     '<div class="set-row">' + pill('red') + '<div class="grow">數量 ≤ 紅線，自動加入待買清單</div></div>' +
-    '<p class="hint" style="margin:10px 0 0">「使用中／備品」的物品看的是備品數量。</p></section>';
+    '<p class="hint" style="margin:12px 0 4px">緊急備品（有效數量 = 沒過期的＋未標效期的）</p>' +
+    '<div class="set-row">' + pill('green', EM_LABEL.green) + '<div class="grow">有效 ≥ 目標</div></div>' +
+    '<div class="set-row">' + pill('yellow', EM_LABEL.yellow) + '<div class="grow">紅線 < 有效 < 目標</div></div>' +
+    '<div class="set-row">' + pill('red', EM_LABEL.red) + '<div class="grow">有效 ≤ 紅線，加入待買清單；快到期或已過期的也會列入「換新」</div></div></section>';
   return html;
+}
+function mountSettings(){
+  var v = document.getElementById('view');
+  bindSteppers(v);
+  [['s-warn', 'warnDays', 0], ['s-check', 'checkMonths', 1]].forEach(function(x){
+    var inp = v.querySelector('#' + x[0]); if (!inp) return;
+    inp.addEventListener('input', function(){
+      var n = toInt(inp.value, -1);
+      if (n < x[2]) return;
+      db.settings[x[1]] = n; persist(); render_badges();
+    });
+  });
+}
+function render_badges(){
+  var nEm = emBuyItems().length, n = buyItems().length + nEm;
+  var badge = document.getElementById('buy-badge'); badge.hidden = !n; badge.textContent = n;
+  var eb = document.getElementById('em-badge'); eb.hidden = !nEm; eb.textContent = nEm;
 }
 function openCatEditor(id){
   var c = id ? getCat(id) : null;
   var art = c ? c.art : 'box', color = c ? c.color : 'sand';
-  var n = c ? activeItems().concat(db.items.filter(function(x){ return x.archived; })).filter(function(it){ return it.categoryId === c.id; }).length : 0;
+  var n = c ? db.items.filter(function(it){ return it.categoryId === c.id; }).length : 0;
   openSheet('<h2>' + ic(c ? 'edit' : 'plus') + (c ? '編輯分類' : '新增分類') + '</h2>' +
     '<div class="field" style="margin-bottom:14px"><span class="flabel">名稱</span><input class="input" id="ce-name" maxlength="12" placeholder="例如：紙類用品" value="' + esc(c ? c.name : '') + '"></div>' +
     '<div class="field" style="margin-bottom:14px"><span class="flabel">插圖</span><div class="art-grid">' +
@@ -1132,7 +1918,7 @@ function openCatEditor(id){
       Object.keys(TINTS).map(function(k){ return '<button type="button" class="sw' + (k === color ? ' on' : '') + '" data-color="' + k + '" style="background:' + TINTS[k] + '" aria-label="' + k + '"></button>'; }).join('') + '</div></div>' +
     '<p class="err" id="ce-err" hidden></p>' +
     '<div class="sheet-acts"><button class="btn ghost" data-close>取消</button><button class="btn primary" data-ok>' + ic('check') + '儲存</button></div>' +
-    (c ? '<button class="btn block danger" data-del style="margin-top:12px"' + '>' + ic('trash') + '刪除這個分類</button>' +
+    (c ? '<button class="btn block danger" data-del style="margin-top:12px">' + ic('trash') + '刪除這個分類</button>' +
          (n ? '<p class="fhint">這個分類還有 ' + n + ' 項物品（含封存），要先把它們改到其他分類才能刪除。</p>' : '') : ''),
     function(root){
       root.querySelectorAll('.art-opt').forEach(function(b){ b.onclick = function(){ art = b.dataset.art; root.querySelectorAll('.art-opt').forEach(function(x){ x.classList.toggle('on', x === b); }); }; });
@@ -1149,6 +1935,7 @@ function openCatEditor(id){
       if (del) del.onclick = function(){
         if (n){ showToast('請先把這個分類的物品改到其他分類'); return; }
         db.categories = db.categories.filter(function(x){ return x.id !== c.id; });
+        if (ui.cat === c.id) ui.cat = null;
         persist(); closeSheet(); render();
         showToast('已刪除分類「' + c.name + '」', null, 2500);
       };
@@ -1179,7 +1966,7 @@ function importData(file){
     if (!data || !Array.isArray(data.items) || !Array.isArray(data.logs) || !Array.isArray(data.categories)){ showToast('備份檔格式不對：缺少 items / logs / categories'); return; }
     openConfirm({ title: '用備份取代目前資料？', icon: 'upload', danger: true, okText: '取代',
       text: '備份裡有 ' + data.items.length + ' 項物品、' + data.logs.length + ' 筆紀錄。<br>目前手機上的 ' + db.items.length + ' 項物品和所有紀錄會被<b>完全取代</b>，建議先匯出目前的資料。' },
-      function(){ hideToast(); db = normalizeDb(data); persist(); go('#/'); showToast('已匯入備份', null, 2500); });
+      function(){ hideToast(); db = normalizeDb(data); persist(); ui.cat = null; ui.filter = null; go('#/'); showToast('已匯入備份', null, 2500); });
   };
   reader.readAsText(file);
 }
@@ -1197,15 +1984,24 @@ document.addEventListener('click', function(e){
       case 'add': actAdd(id); break;
       case 'open': actOpen(id); break;
       case 'finish': actFinish(id); break;
-      case 'restock': openRestock(id); break;
+      case 'restock': openRestock(id, { pool: 'daily' }); break;
+      case 'em-restock': openRestock(id, { pool: 'emergency', n: toInt(b.dataset.n, 1) }); break;
+      case 'em-transfer': openEmMove(id, 'transfer'); break;
+      case 'em-use': openEmMove(id, 'use'); break;
+      case 'batch': openBatch(id, b.dataset.bid); break;
+      case 'batch-add': openAddBatch(id, 'emergency'); break;
+      case 'edit-open': openEditOpen(id); break;
+      case 'check-toggle': ui.checked[id] = !ui.checked[id]; render(); break;
+      case 'check-finish': finishCheck(); break;
       case 'filter': ui.filter = ui.filter === id ? null : id; render(); break;
+      case 'cat': ui.cat = !id || ui.cat === id ? null : id; render(); break;
       case 'share': shareBuy(); break;
       case 'adjust': openAdjust(id); break;
       case 'switch': openSwitchMode(id); break;
       case 'more': ui.histShow += 50; render(); break;
       case 'archive':
         openConfirm({ title: '封存「' + getItem(id).name + '」？', icon: 'archive', okText: '封存',
-          text: '封存後不會出現在首頁和待買清單，歷史紀錄會保留。可以在「設定 → 已封存的物品」取消封存。' },
+          text: '封存後不會出現在首頁、緊急備品區和待買清單，歷史紀錄會保留。可以在「設定 → 已封存的物品」取消封存。' },
           function(){ var it = getItem(id); it.archived = true; persist(); go('#/'); showToast('已封存「' + it.name + '」', null, 2500); });
         break;
       case 'unarchive': var u = getItem(id); u.archived = false; persist(); render(); showToast('已取消封存「' + u.name + '」', null, 2500); break;
@@ -1231,8 +2027,10 @@ document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeS
 /* ================= 啟動 ================= */
 document.querySelectorAll('[data-ic]').forEach(function(el){ el.innerHTML = ic(el.dataset.ic); });
 var storageOk = adapter.available();
-db = normalizeDb(adapter.load());
-if (!adapter.load()) persist();
+var loaded = adapter.load();
+var needSave = !loaded || loaded.version !== 2;
+db = normalizeDb(loaded);
+if (needSave) persist();
 render();
 if ('serviceWorker' in navigator && location.protocol === 'https:'){
   navigator.serviceWorker.register('sw.js').catch(function(){});
