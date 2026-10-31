@@ -41,10 +41,12 @@ function ok(c, m){ if (c) console.log('  ✓ ' + m); else { fails++; console.log
   console.log('用途：三選一');
   await p.goto(URL + '#/new'); await sleep(150);
   ok(await p.isChecked('input[name=use][value=daily]'), '從「新增」進來，預設是「日常用品」');
+  ok((await p.$$('input[name=use]')).length === 3, '從「新增」進來，三個選項都有');
   ok(!(await p.isVisible('#f-emt')), '日常用品不顯示緊急包欄位');
   ok(!(await p.textContent('#view')).includes('這也是緊急備品'), '不再出現「這也是緊急備品」');
   await p.goto(URL + '#/new/em'); await sleep(150);
   ok(await p.isChecked('input[name=use][value=em]'), '從「緊急」分頁新增，預設是「只放緊急包」');
+  ok((await p.$$('input[name=use]')).length === 2 && !(await p.$('input[name=use][value=daily]')), '從「緊急」分頁新增，只有兩個選項（沒有「日常用品」）');
   ok(!(await p.isVisible('#f-qty')) && await p.isVisible('#f-emt'), '只放緊急包：隱藏日常欄位、顯示緊急包的數量');
   await shot('form-em');
   await p.click('.mode-card:has(input[name=use][value=both])'); await sleep(100);
@@ -65,6 +67,7 @@ function ok(c, m){ if (c) console.log('  ✓ ' + m); else { fails++; console.log
   console.log('編輯：用途切換與限制');
   await p.goto(URL + '#/edit/' + water); await sleep(150);
   ok(await p.isChecked('input[name=use][value=both]'), '編輯時正確帶入目前用途');
+  ok((await p.$$('input[name=use]')).length === 3, '編輯時三個選項都有（可以改回日常用品）');
   await p.click('.mode-card:has(input[name=use][value=daily])');
   await p.click('#item-form button[type=submit]'); await sleep(150);
   ok((await p.textContent('#f-err')).includes('才能把用途改成「日常用品」'), '緊急包還有庫存時不能改成日常用品');

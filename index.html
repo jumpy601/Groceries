@@ -304,7 +304,7 @@ button{cursor:pointer;touch-action:manipulation}
 
 <script>
 'use strict';
-var APP_VERSION = 'v1.2';
+var APP_VERSION = 'v1.3';
 var STORE_KEY = 'pantry.v1';
 var DAY = 86400000;
 
@@ -1723,7 +1723,8 @@ function renderForm(editId, preset){
     return '<label class="mode-card"><input type="radio" name="use" value="' + v + '"' + (use === v ? ' checked' : '') + '><div><b>' + title + '</b><small>' + desc + '</small></div></label>';
   }
   html += '<div class="field"><span>用途</span>' +
-    useCard('daily', '🏠 日常用品', '平常會用，顯示在首頁。例如：雞蛋、衛生紙。') +
+    // 從緊急分頁新增的一定會放進緊急包，只給兩個選項
+    (isEmNew ? '' : useCard('daily', '🏠 日常用品', '平常會用，顯示在首頁。例如：雞蛋、衛生紙。')) +
     useCard('both', '🏠＋🆘 日常用品，緊急包也備一份', '例如：礦泉水平常喝，防災包裡也放幾瓶。兩邊數量分開記，平常按「用掉」不會動到緊急包裡的。') +
     useCard('em', '🆘 只放緊急包', '平常不用。例如：乾燥飯、手電筒電池。只出現在「緊急」分頁。') +
     '</div>' +
