@@ -267,6 +267,7 @@ button{cursor:pointer;touch-action:manipulation}
 .toggle-row small{color:var(--ink2);font-size:13px}
 .sub-box{border-left:3px solid var(--line);padding:4px 0 0 14px;margin:0 0 18px}
 .form.no-daily .only-daily,.form:not(.em-on) .only-em{display:none}
+.form [hidden]{display:none !important}
 .form:not(.ao-on) .only-ao{display:none}
 .row2{display:flex;gap:8px}
 .row2 .input{flex:1}
@@ -304,7 +305,7 @@ button{cursor:pointer;touch-action:manipulation}
 
 <script>
 'use strict';
-var APP_VERSION = 'v1.4';
+var APP_VERSION = 'v1.5';
 var STORE_KEY = 'pantry.v1';
 var DAY = 86400000;
 
@@ -960,13 +961,55 @@ function openConfirm(o, onOk){
     function(root){ root.querySelector('[data-ok]').onclick = function(){ closeSheet(); onOk(); }; });
 }
 
+// 效期輸入：不填／全部同一個／每個不一樣（補貨面板、新增表單共用）
+function expPickerHtml(id){
+  return '<div class="exp-picker" id="' + id + '"><div class="seg"><button type="button" data-m="none">不填</button><button type="button" data-m="same">全部同一個</button><button type="button" data-m="each">每個不一樣</button></div><div class="ep-dates"></div></div>';
+}
+function mountExpPicker(el, onChange){
+  var mode = 'none', dates = [], k = 0, labels = [];
+  var box = el.querySelector('.ep-dates');
+  function draw(){
+    var eachBtn = el.querySelector('[data-m=each]');
+    eachBtn.disabled = k > 30;
+    if (mode === 'each' && k > 30) mode = 'same';
+    el.querySelectorAll('.seg button').forEach(function(b){ b.classList.toggle('on', b.dataset.m === mode); });
+    if (mode === 'none' || k <= 0){ box.innerHTML = ''; return; }
+    var h = '<div class="date-list">';
+    if (mode === 'same') h += '<span>全部</span><input class="input" type="date" data-i="0" value="' + (dates[0] || '') + '">';
+    else for (var i = 0; i < k; i++) h += '<span>' + esc(labels[i]) + '</span><input class="input" type="date" data-i="' + i + '" value="' + (dates[i] || '') + '">';
+    box.innerHTML = h + '</div>';
+    box.querySelectorAll('input').forEach(function(inp){
+      inp.onchange = function(){
+        var i = +inp.dataset.i; dates[i] = inp.value;
+        // 下一欄還空著就先帶入同一天，只要改不同的
+        if (mode === 'each') box.querySelectorAll('input').forEach(function(o){ var j = +o.dataset.i; if (j > i && !o.value){ o.value = inp.value; dates[j] = inp.value; } });
+        if (onChange) onChange();
+      };
+    });
+  }
+  el.querySelectorAll('.seg button').forEach(function(b){ b.onclick = function(){ mode = b.dataset.m; draw(); if (onChange) onChange(); }; });
+  return {
+    setCount: function(n, lb){ k = Math.max(0, n || 0); labels = lb || []; draw(); },
+    values: function(){
+      var r = [];
+      for (var i = 0; i < k; i++) r.push(mode === 'none' ? null : mode === 'same' ? (dates[0] || null) : (dates[i] || null));
+      return r;
+    }
+  };
+}
+function countLabels(n, unit){ var r = []; for (var i = 0; i < n; i++) r.push('第 ' + (i + 1) + ' ' + unit); return r; }
+function groupExps(exps){
+  var g = {}, order = [];
+  (exps || []).forEach(function(e){ var k = validYmd(e) ? e : ''; if (!(k in g)){ g[k] = 0; order.push(k); } g[k]++; });
+  return order.map(function(k){ return { exp: k || null, qty: g[k] }; });
+}
+
 // 補貨：選 +1 / +2 / +3 / 自訂（可選效期）→ 確認或取消
 function openRestock(id, opt){
   var it = getItem(id); if (!it) return;
   opt = opt || {};
   var pool = opt.pool || (hasDaily(it) ? 'daily' : 'emergency');
   var n = opt.n > 0 ? opt.n : 1, custom = n > 3;
-  var expMode = 'none', dates = [];
   var canPick = hasDaily(it) && hasEm(it);
   openSheet(
     '<h2>' + ic('restock') + '補貨：' + esc(it.name) + '</h2>' +
@@ -975,35 +1018,14 @@ function openRestock(id, opt){
     '<div class="pick">' + [1, 2, 3].map(function(k){ return '<button class="pick-btn" data-n="' + k + '">+' + k + '</button>'; }).join('') +
     '<button class="pick-btn" data-n="custom">自訂</button></div>' +
     '<div class="field" id="rs-custom" hidden style="margin-bottom:12px"><span class="flabel">自訂數量</span><input class="input" type="number" inputmode="numeric" min="1" step="1" value="' + (custom ? n : 4) + '" id="rs-input"></div>' +
-    '<span class="flabel">有效期限（選填，之後也可以補）</span><div class="seg" id="rs-exp"><button data-m="none">不填</button><button data-m="same">全部同一個</button><button data-m="each">每個不一樣</button></div>' +
-    '<div id="rs-dates"></div>' +
+    '<span class="flabel">有效期限（選填，之後也可以補）</span>' + expPickerHtml('rs-exp') +
     '<div class="preview" id="rs-preview"></div>' +
     '<div class="sheet-acts"><button class="btn ghost" data-close>取消</button><button class="btn primary" data-ok>' + ic('check') + '確認補貨</button></div>',
     function(root){
       var input = root.querySelector('#rs-input');
       function cur(){ return custom ? toInt(input.value, 0) : n; }
-      function drawDates(){
-        var k = cur(), box = root.querySelector('#rs-dates');
-        root.querySelectorAll('#rs-exp button').forEach(function(b){ b.classList.toggle('on', b.dataset.m === expMode); });
-        var eachBtn = root.querySelector('#rs-exp [data-m=each]');
-        eachBtn.disabled = k > 30;
-        if (expMode === 'each' && k > 30) expMode = 'same';
-        if (expMode === 'none'){ box.innerHTML = ''; return; }
-        if (expMode === 'same'){ box.innerHTML = '<div class="date-list"><span>全部</span><input class="input" type="date" data-i="0" value="' + (dates[0] || '') + '"></div>'; }
-        else {
-          var h = '<div class="date-list">';
-          for (var i = 0; i < k; i++) h += '<span>第 ' + (i + 1) + ' ' + esc(it.unit) + '</span><input class="input" type="date" data-i="' + i + '" value="' + (dates[i] || '') + '">';
-          box.innerHTML = h + '</div>';
-        }
-        box.querySelectorAll('input').forEach(function(inp){
-          inp.onchange = function(){
-            var i = +inp.dataset.i; dates[i] = inp.value;
-            // 下一欄還空著就先帶入同一天，只要改不同的
-            if (expMode === 'each') box.querySelectorAll('input').forEach(function(o){ var j = +o.dataset.i; if (j > i && !o.value){ o.value = inp.value; dates[j] = inp.value; } });
-            upd();
-          };
-        });
-      }
+      var picker = mountExpPicker(root.querySelector('#rs-exp'));
+      function drawDates(){ var k = cur(); picker.setCount(k > 0 ? k : 0, countLabels(k, it.unit)); }
       function upd(){
         var k = cur();
         root.querySelectorAll('.pick-btn').forEach(function(b){ b.classList.toggle('on', custom ? b.dataset.n === 'custom' : +b.dataset.n === n); });
@@ -1032,13 +1054,11 @@ function openRestock(id, opt){
           if (custom){ input.focus(); input.select(); }
         };
       });
-      root.querySelectorAll('#rs-exp button').forEach(function(b){ b.onclick = function(){ expMode = b.dataset.m; drawDates(); upd(); }; });
       if (canPick) root.querySelectorAll('#rs-pool button').forEach(function(b){ b.onclick = function(){ pool = b.dataset.pool; upd(); }; });
-      input.oninput = function(){ upd(); if (expMode === 'each') drawDates(); };
+      input.oninput = function(){ upd(); drawDates(); };
       root.querySelector('[data-ok]').onclick = function(){
         var k = cur(); if (!(k > 0)) return;
-        var exps = [];
-        for (var i = 0; i < k; i++) exps.push(expMode === 'none' ? null : expMode === 'same' ? (dates[0] || null) : (dates[i] || null));
+        var exps = picker.values();
         closeSheet();
         doRestock(id, k, pool, exps);
       };
@@ -1233,7 +1253,7 @@ function bindSteppers(root){
 }
 
 /* ================= 路由 ================= */
-var ui = { filter: null, cat: null, histShow: 30, checked: {} };
+var ui = { filter: null, cat: null, histShow: 30, checked: {}, formPreset: null };
 function route(){
   var h = location.hash || '#/';
   var p = h.replace(/^#\/?/, '').split('/');
@@ -1708,10 +1728,14 @@ function renderForm(editId, preset){
   var it = editId ? getItem(editId) : null;
   if (editId && !it) return renderDetail(editId);
   var isEmNew = !it && preset === 'em';
+  // 「新增，繼續下一個」會保留分類、位置、用途、記錄方式
+  var pre = !it && ui.formPreset ? ui.formPreset : null;
+  ui.formPreset = null;
   var cats = sortedCats();
-  var catId = it ? it.categoryId : (preset && getCat(preset) ? preset : (cats[0] && cats[0].id));
-  var mode = it ? it.mode : 'count';
-  var emOn = it ? hasEm(it) : isEmNew, daily = it ? hasDaily(it) : true;
+  var catId = it ? it.categoryId : pre && getCat(pre.cat) ? pre.cat : (preset && getCat(preset) ? preset : (cats[0] && cats[0].id));
+  var mode = it ? it.mode : pre ? pre.mode : 'count';
+  var use = it ? (hasEm(it) ? (hasDaily(it) ? 'both' : 'em') : 'daily') : pre && !(isEmNew && pre.use === 'daily') ? pre.use : isEmNew ? 'em' : 'daily';
+  var emOn = use !== 'daily', daily = use !== 'em';
   var ao = it && it.afterOpen;
   var locs = {};
   db.items.forEach(function(x){ if (x.location) locs[x.location] = 1; });
@@ -1725,11 +1749,10 @@ function renderForm(editId, preset){
     '<div class="field"><span>單位</span><div class="chips" style="margin-bottom:8px">' +
       UNITS.map(function(x){ return '<button type="button" class="opt unit-opt" data-unit="' + x + '">' + x + '</button>'; }).join('') + '</div>' +
       '<input class="input" name="f-unit" maxlength="6" placeholder="或自己輸入，例如：串" value="' + esc(it ? it.unit : '') + '"></div>' +
-    '<label class="field"><span>存放位置（選填）</span><input class="input" name="f-loc" maxlength="20" list="loc-list" placeholder="例如：廚房櫥櫃、玄關防災包" value="' + esc(it ? it.location : '') + '">' +
+    '<label class="field"><span>存放位置（選填）</span><input class="input" name="f-loc" maxlength="20" list="loc-list" placeholder="例如：廚房櫥櫃、玄關防災包" value="' + esc(it ? it.location : pre ? pre.loc : '') + '">' +
       '<datalist id="loc-list">' + Object.keys(locs).map(function(l){ return '<option value="' + esc(l) + '">'; }).join('') + '</datalist></label>';
 
   // 用途：日常／日常＋緊急包／只放緊急包（三選一）
-  var use = isEmNew ? 'em' : emOn ? (daily ? 'both' : 'em') : 'daily';
   function useCard(v, title, desc){
     return '<label class="mode-card"><input type="radio" name="use" value="' + v + '"' + (use === v ? ' checked' : '') + '><div><b>' + title + '</b><small>' + desc + '</small></div></label>';
   }
@@ -1742,19 +1765,22 @@ function renderForm(editId, preset){
     '<div class="sub-box only-em"><span class="flabel" style="margin-left:0">🆘 緊急包的數量</span>' +
       '<div class="field"><span>目標存量</span>' + stepperHtml('f-emt', it ? it.emergency.target || 1 : 6) + '</div>' +
       '<div class="field"><span>紅線</span>' + stepperHtml('f-emr', it ? it.emergency.redLine : 2) + '<p class="fhint" id="em-hint"></p></div>' +
-      (!it || !hasEm(it) ? '<div class="field"><span>目前數量</span>' + stepperHtml('f-emq', 0) + '<p class="fhint">效期之後可在物品頁或「半年檢查」時一包一包補上。</p></div>' : '') +
+      (!it || !hasEm(it) ? '<div class="field"><span>目前數量</span>' + stepperHtml('f-emq', 0) + '</div>' : '') +
+      (!it ? '<div class="field" id="em-exp-wrap" hidden><span>緊急包的有效期限（選填）</span>' + expPickerHtml('ep-em') + '<p class="fhint">之後也可以在物品頁或「半年檢查」時補上、修改。</p></div>' : '') +
     '</div>';
 
   // 日常
   html += '<div class="only-daily">';
   if (!it){
     html += '<div class="field"><span>日常記錄方式（之後可以在物品頁切換）</span>' +
-      '<label class="mode-card"><input type="radio" name="mode" value="count" checked><div><b>簡單計數</b><small>按 ＋ 入庫、按 − 用掉。適合衛生紙、雞蛋這類一個一個用的東西。</small></div></label>' +
-      '<label class="mode-card"><input type="radio" name="mode" value="stock"><div><b>使用中／備品</b><small>以整包為單位，記「開封、用完、補貨」。適合醬油、洗衣球、清潔劑這類慢慢用完的東西。</small></div></label></div>' +
+      '<label class="mode-card"><input type="radio" name="mode" value="count"' + (mode === 'count' ? ' checked' : '') + '><div><b>簡單計數</b><small>按 ＋ 入庫、按 − 用掉。適合衛生紙、雞蛋這類一個一個用的東西。</small></div></label>' +
+      '<label class="mode-card"><input type="radio" name="mode" value="stock"' + (mode === 'stock' ? ' checked' : '') + '><div><b>使用中／備品</b><small>以整包為單位，記「開封、用完、補貨」。適合醬油、洗衣球、清潔劑這類慢慢用完的東西。</small></div></label></div>' +
       '<div class="field only-count"><span>目前數量</span>' + stepperHtml('f-qty', 0) + '</div>' +
       '<div class="field only-stock"><span>現在有正在使用（已開封）的嗎？</span><div class="chips">' +
         '<label class="opt"><input type="radio" name="f-inuse" value="1" checked>有，使用中</label><label class="opt"><input type="radio" name="f-inuse" value="0">沒有</label></div></div>' +
-      '<div class="field only-stock"><span>未開封備品</span>' + stepperHtml('f-spare', 0) + '</div>';
+      '<div class="field only-stock" id="open-date-wrap"><span>什麼時候開封的</span><input class="input" type="date" id="f-opendate" max="' + ymd(now()) + '" value="' + ymd(now()) + '"><p class="fhint">卡片上的「已開封 X 天」從這天算起。</p></div>' +
+      '<div class="field only-stock"><span>未開封備品</span>' + stepperHtml('f-spare', 0) + '</div>' +
+      '<div class="field" id="daily-exp-wrap" hidden><span>有效期限（選填）</span>' + expPickerHtml('ep-daily') + '<p class="fhint">之後也可以在物品頁的「效期批次」補上、修改。</p></div>';
   } else if (daily){
     html += '<div class="field"><span>記錄方式與數量</span><div class="readonly-box">' + MODE_LABEL[it.mode] + ' · ' + esc(stateText(it.mode, it, it.unit)) +
       '<br>要改數量請用物品頁的按鈕或「盤點校正」；要改記錄方式請用「切換模式」，這樣歷史才會完整。</div></div>';
@@ -1774,7 +1800,9 @@ function renderForm(editId, preset){
   // 到期提醒
   html += '<label class="field"><span>效期提醒：到期前幾天開始提醒（選填）</span><input class="input" type="number" inputmode="numeric" min="0" id="f-warn" placeholder="空白 = 用設定裡的預設 ' + db.settings.warnDays + ' 天" value="' + (it && it.warnDays != null ? it.warnDays : '') + '"></label>';
   html += '<p class="err" id="f-err" hidden></p>' +
-    '<button type="submit" class="btn primary block">' + ic('check') + (it ? '儲存變更' : '新增') + '</button></form>';
+    '<button type="submit" class="btn primary block">' + ic('check') + (it ? '儲存變更' : '新增') + '</button>' +
+    (it ? '' : '<button type="button" class="btn ghost block" id="f-next" style="margin-top:10px">' + ic('plus') + '新增，繼續下一個</button><p class="fhint" style="text-align:center">會保留分類、存放位置、用途和記錄方式</p>') +
+    '</form>';
   return html;
 }
 function mountForm(editId){
@@ -1785,7 +1813,32 @@ function mountForm(editId){
   function curUse(){ return f.querySelector('input[name=use]:checked').value; }
   function curMode(){ return it ? it.mode : f.querySelector('input[name=mode]:checked').value; }
   function aoKind(){ return f.querySelector('input[name=ao]:checked').value; }
+  var epDaily = f.querySelector('#ep-daily') && mountExpPicker(f.querySelector('#ep-daily'));
+  var epEm = f.querySelector('#ep-em') && mountExpPicker(f.querySelector('#ep-em'));
+  var lastDaily = '', lastEm = '';
+  function curInUse(){ var r = f.querySelector('input[name=f-inuse]:checked'); return r && r.value === '1' ? 1 : 0; }
+  // 新增時：依數量列出效期欄位（只有數量或單位真的變了才重畫，避免打斷正在選的日期）
+  function updPickers(){
+    var unit = fUnit.value.trim() || '個';
+    if (epDaily){
+      var m = curMode(), labels;
+      if (m === 'stock'){
+        var iu = curInUse(), sp = Math.max(0, toInt(f.querySelector('#f-spare').value, 0));
+        labels = (iu ? ['使用中那' + unit] : []).concat(countLabels(sp, unit).map(function(x){ return '備品' + x; }));
+        f.querySelector('#open-date-wrap').hidden = !iu;
+      } else labels = countLabels(Math.max(0, toInt(f.querySelector('#f-qty').value, 0)), unit);
+      var key = labels.join('|');
+      f.querySelector('#daily-exp-wrap').hidden = !labels.length;
+      if (key !== lastDaily){ lastDaily = key; epDaily.setCount(labels.length, labels); }
+    }
+    if (epEm){
+      var q = Math.max(0, toInt(f.querySelector('#f-emq').value, 0)), lb = countLabels(q, unit), k2 = lb.join('|');
+      f.querySelector('#em-exp-wrap').hidden = !q;
+      if (k2 !== lastEm){ lastEm = k2; epEm.setCount(q, lb); }
+    }
+  }
   function updHint(){
+    updPickers();
     var m = curMode(), r = Math.max(0, toInt(f.querySelector('#f-red').value, 0));
     var u = curUse(), em = u !== 'daily', daily = u !== 'em', k = aoKind();
     f.className = 'form m-' + m + (em ? ' em-on' : '') + (daily ? '' : ' no-daily') + (k ? ' ao-on' : '');
@@ -1808,8 +1861,10 @@ function mountForm(editId){
   f.addEventListener('change', updHint);
   f.addEventListener('input', updHint);
   syncUnit(); updHint();
-  f.onsubmit = function(e){
-    e.preventDefault();
+  f.onsubmit = function(e){ e.preventDefault(); save(false); };
+  var nextBtn = f.querySelector('#f-next');
+  if (nextBtn) nextBtn.onclick = function(){ save(true); };
+  function save(next){
     var err = f.querySelector('#f-err');
     function fail(m){ err.textContent = m; err.hidden = false; err.scrollIntoView({ block: 'center' }); }
     var name = fName.value.trim(), unit = fUnit.value.trim() || '個';
@@ -1840,6 +1895,12 @@ function mountForm(editId){
       return;
     }
     var m = curMode();
+    var openedAt = null;
+    if (daily && m === 'stock' && curInUse()){
+      var od = f.querySelector('#f-opendate').value;
+      if (validYmd(od) && parseYmd(od) > dayStart(now())) return fail('開封日期不能在未來');
+      openedAt = !validYmd(od) || od === ymd(now()) ? now() : parseYmd(od) + 12 * 3600e3;
+    }
     var n = {
       id: uid(), name: name, categoryId: catEl.value, unit: unit, location: fLoc.value.trim(), mode: m, redLine: daily ? red : 0,
       quantity: daily && m === 'count' ? Math.max(0, toInt(f.querySelector('#f-qty').value, 0)) : 0,
@@ -1848,17 +1909,32 @@ function mountForm(editId){
       daily: daily, emergency: emergency, afterOpen: afterOpen, warnDays: warn, batches: [],
       openedAt: null, openedExp: null, createdAt: now(), updatedAt: now(), archived: false
     };
-    if (n.inUse) n.openedAt = now();
+    if (n.inUse) n.openedAt = openedAt;
     var t = begin(n);
-    if (daily) bAdd(t, 'daily', level(n), null);
-    if (em) bAdd(t, 'emergency', Math.max(0, toInt((f.querySelector('#f-emq') || {}).value, 0)), null);
+    if (daily){
+      // 使用中那包的效期記在 openedExp，其餘照效期分批
+      var dv = epDaily.values();
+      if (n.inUse){ n.openedExp = validYmd(dv[0]) ? dv[0] : null; dv = dv.slice(1); }
+      groupExps(dv).forEach(function(g){ bAdd(t, 'daily', g.qty, g.exp); });
+      syncPool(t, 'daily', level(n));
+    }
+    if (em) groupExps(epEm.values()).forEach(function(g){ bAdd(t, 'emergency', g.qty, g.exp); });
     db.items.push(n);
     db.logs.push({ id: uid(), itemId: n.id, at: n.createdAt, mode: m, action: 'create', dQty: 0, dInUse: 0, dSpare: 0, before: snap(n), after: snap(n), by: null, daily: daily, emBefore: poolSum(n, 'emergency'), emAfter: poolSum(n, 'emergency') });
     persist();
     ui.filter = null;
+    var msg = '已新增「' + n.name + '」' + (isBuy(n) ? '，目前在紅線以下，已加入待買清單' : emBuy(n) ? '，緊急備品不足，已加入待買清單' : '');
+    if (next){
+      ui.formPreset = { cat: catEl.value, loc: fLoc.value.trim(), use: use, mode: m };
+      render();
+      document.getElementById('app-scroll').scrollTop = 0;
+      var nm = document.querySelector('#item-form [name=f-name]'); if (nm) nm.focus();
+      showToast(msg + '。繼續新增下一個', null, 3000);
+      return;
+    }
     go(daily ? '#/' : '#/emergency');
-    showToast('已新增「' + n.name + '」' + (isBuy(n) ? '，目前在紅線以下，已加入待買清單' : emBuy(n) ? '，緊急備品不足，已加入待買清單' : ''), null, 3500);
-  };
+    showToast(msg, null, 3500);
+  }
 }
 
 /* ================= 設定 ================= */
