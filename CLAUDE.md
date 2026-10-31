@@ -11,7 +11,7 @@
 2. 交付前先跑檢查：
    - CSS 大括號要平衡
    - 每個 `<script>` 都要通過 `node --check`
-   - 用 Playwright 開手機尺寸實際操作，新功能＋舊功能都要測
+   - 用 Playwright 開手機尺寸實際操作，新功能＋舊功能都要測：`node tests/e2e.js`，新功能要把測試加進這支檔案
 3. **一定要附測試清單給使用者**：
    - 存成 `docs/test-checklists/vX.Y.md`，跟這次改版一起 commit
    - 回覆裡也要直接列出來

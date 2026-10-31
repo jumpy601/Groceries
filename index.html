@@ -304,7 +304,7 @@ button{cursor:pointer;touch-action:manipulation}
 
 <script>
 'use strict';
-var APP_VERSION = 'v1.1';
+var APP_VERSION = 'v1.2';
 var STORE_KEY = 'pantry.v1';
 var DAY = 86400000;
 
@@ -1506,7 +1506,7 @@ function renderEmergency(){
   });
   var html = '<header class="sub-head"><h1>緊急備品 · ' + list.length + ' 項</h1><button class="btn sm" data-act="nav" data-id="#/new/em">' + ic('plus', 'ic-sm') + '新增</button></header>';
   if (!list.length){
-    return html + '<div class="empty">' + artSvg('kit', 96) + '<h2>還沒有緊急備品</h2><p>例如礦泉水、乾燥飯、手電筒電池。<br>已經有的日常物品，可以在物品頁按「編輯資料」勾選「也是緊急備品」。</p>' +
+    return html + '<div class="empty">' + artSvg('kit', 96) + '<h2>還沒有緊急備品</h2><p>例如礦泉水、乾燥飯、手電筒電池。<br>已經有的日常物品，可以在物品頁按「編輯資料」，把用途改成「日常用品，緊急包也備一份」。</p>' +
       '<button class="btn primary" data-act="nav" data-id="#/new/em">' + ic('plus') + '新增緊急備品</button></div>';
   }
   html += checkBanner();
@@ -1717,15 +1717,21 @@ function renderForm(editId, preset){
     '<label class="field"><span>存放位置（選填）</span><input class="input" name="f-loc" maxlength="20" list="loc-list" placeholder="例如：廚房櫥櫃、玄關防災包" value="' + esc(it ? it.location : '') + '">' +
       '<datalist id="loc-list">' + Object.keys(locs).map(function(l){ return '<option value="' + esc(l) + '">'; }).join('') + '</datalist></label>';
 
-  // 緊急備品
-  html += '<div class="field"><span>緊急備品</span>' +
-    '<label class="toggle-row"><input type="checkbox" id="f-em"' + (emOn ? ' checked' : '') + '><div><b>🆘 這也是緊急備品</b><small>和分類不衝突。緊急的數量、目標、紅線和日常分開算，平常的「用掉」不會動到它。</small></div></label>' +
-    '<div class="sub-box only-em">' +
-      '<label class="toggle-row"><input type="checkbox" id="f-emonly"' + (daily ? '' : ' checked') + '><div><b>只放在緊急包，平常不用</b><small>例如乾燥飯、手電筒電池。不追蹤日常庫存，不會出現在首頁和日常待買。</small></div></label>' +
-      '<div class="field"><span>緊急目標存量</span>' + stepperHtml('f-emt', it ? it.emergency.target || 1 : 6) + '</div>' +
-      '<div class="field"><span>緊急紅線</span>' + stepperHtml('f-emr', it ? it.emergency.redLine : 2) + '<p class="fhint" id="em-hint"></p></div>' +
-      (!it || !hasEm(it) ? '<div class="field"><span>目前緊急數量</span>' + stepperHtml('f-emq', 0) + '<p class="fhint">效期之後可在物品頁或「半年檢查」時一包一包補上。</p></div>' : '') +
-    '</div></div>';
+  // 用途：日常／日常＋緊急包／只放緊急包（三選一）
+  var use = isEmNew ? 'em' : emOn ? (daily ? 'both' : 'em') : 'daily';
+  function useCard(v, title, desc){
+    return '<label class="mode-card"><input type="radio" name="use" value="' + v + '"' + (use === v ? ' checked' : '') + '><div><b>' + title + '</b><small>' + desc + '</small></div></label>';
+  }
+  html += '<div class="field"><span>用途</span>' +
+    useCard('daily', '🏠 日常用品', '平常會用，顯示在首頁。例如：雞蛋、衛生紙。') +
+    useCard('both', '🏠＋🆘 日常用品，緊急包也備一份', '例如：礦泉水平常喝，防災包裡也放幾瓶。兩邊數量分開記，平常按「用掉」不會動到緊急包裡的。') +
+    useCard('em', '🆘 只放緊急包', '平常不用。例如：乾燥飯、手電筒電池。只出現在「緊急」分頁。') +
+    '</div>' +
+    '<div class="sub-box only-em"><span class="flabel" style="margin-left:0">🆘 緊急包的數量</span>' +
+      '<div class="field"><span>目標存量</span>' + stepperHtml('f-emt', it ? it.emergency.target || 1 : 6) + '</div>' +
+      '<div class="field"><span>紅線</span>' + stepperHtml('f-emr', it ? it.emergency.redLine : 2) + '<p class="fhint" id="em-hint"></p></div>' +
+      (!it || !hasEm(it) ? '<div class="field"><span>目前數量</span>' + stepperHtml('f-emq', 0) + '<p class="fhint">效期之後可在物品頁或「半年檢查」時一包一包補上。</p></div>' : '') +
+    '</div>';
 
   // 日常
   html += '<div class="only-daily">';
@@ -1741,7 +1747,7 @@ function renderForm(editId, preset){
     html += '<div class="field"><span>記錄方式與數量</span><div class="readonly-box">' + MODE_LABEL[it.mode] + ' · ' + esc(stateText(it.mode, it, it.unit)) +
       '<br>要改數量請用物品頁的按鈕或「盤點校正」；要改記錄方式請用「切換模式」，這樣歷史才會完整。</div></div>';
   } else {
-    html += '<div class="field"><span>日常記錄方式</span><div class="readonly-box">取消「只放在緊急包」後，日常會用「' + MODE_LABEL[it.mode] + '」從 0 開始記。</div></div>';
+    html += '<div class="field"><span>日常記錄方式</span><div class="readonly-box">用途改成有「日常用品」的選項後，日常會用「' + MODE_LABEL[it.mode] + '」從 0 開始記。</div></div>';
   }
   html += '<div class="field"><span id="rl-title">紅線（安全庫存）</span>' + stepperHtml('f-red', it ? it.redLine : 1) + '<p class="fhint" id="rl-hint"></p></div>';
   // 開封後期限
@@ -1764,19 +1770,19 @@ function mountForm(editId){
   var it = editId ? getItem(editId) : null;
   bindSteppers(f);
   var fName = f.querySelector('[name=f-name]'), fUnit = f.querySelector('[name=f-unit]'), fLoc = f.querySelector('[name=f-loc]');
-  var fEm = f.querySelector('#f-em'), fEmOnly = f.querySelector('#f-emonly');
+  function curUse(){ return f.querySelector('input[name=use]:checked').value; }
   function curMode(){ return it ? it.mode : f.querySelector('input[name=mode]:checked').value; }
   function aoKind(){ return f.querySelector('input[name=ao]:checked').value; }
   function updHint(){
     var m = curMode(), r = Math.max(0, toInt(f.querySelector('#f-red').value, 0));
-    var em = fEm.checked, daily = !(em && fEmOnly.checked), k = aoKind();
+    var u = curUse(), em = u !== 'daily', daily = u !== 'em', k = aoKind();
     f.className = 'form m-' + m + (em ? ' em-on' : '') + (daily ? '' : ' no-daily') + (k ? ' ao-on' : '');
     f.querySelector('#rl-title').textContent = m === 'stock' ? '備品紅線（安全庫存）' : '紅線（安全庫存）';
     f.querySelector('#rl-hint').textContent = m === 'stock'
       ? '看「未開封備品」的數量：備品 ≤ ' + r + ' 時自動加入待買清單。設 0 = 備品用完才提醒；設 1 = 只剩最後 1 個備品就提醒。'
       : '數量 ≤ ' + r + ' 時自動加入待買清單，補到 ' + (r + 1) + ' 以上才移出。';
     var et = toInt(f.querySelector('#f-emt').value, 0), er = toInt(f.querySelector('#f-emr').value, 0);
-    f.querySelector('#em-hint').textContent = '有效數量 ≥ ' + et + ' 是足夠、' + (er + 1) + '～' + (et - 1) + ' 是未達目標、≤ ' + er + ' 加入待買清單。';
+    f.querySelector('#em-hint').textContent = '緊急包裡有效的數量 ≥ ' + et + ' 是足夠、' + (er + 1) + '～' + (et - 1) + ' 是未達目標、≤ ' + er + ' 加入待買清單。';
     f.querySelector('#ao-hint').textContent = k === 'label' ? '照包裝上「開封後 X 內用完」的標示填。'
       : k === 'personal' ? '你自己想提醒的天數，畫面上會標明是個人提醒、不是包裝建議。'
       : '沒有資料就維持未設定，app 不會自己估一個期限。';
@@ -1797,22 +1803,22 @@ function mountForm(editId){
     var name = fName.value.trim(), unit = fUnit.value.trim() || '個';
     var catEl = f.querySelector('input[name=cat]:checked');
     var red = toInt(f.querySelector('#f-red').value, -1);
-    var em = fEm.checked, daily = !(em && fEmOnly.checked);
+    var use = curUse(), em = use !== 'daily', daily = use !== 'em';
     var et = toInt(f.querySelector('#f-emt').value, -1), er = toInt(f.querySelector('#f-emr').value, -1);
     var k = aoKind(), aon = toInt(f.querySelector('#f-aon').value, 0), aou = f.querySelector('#f-aou').value;
     var wv = f.querySelector('#f-warn').value.trim(), warn = wv === '' ? null : toInt(wv, -1);
     if (!name) return fail('請輸入名稱');
     if (!catEl) return fail('請選擇分類（可到設定新增）');
     if (daily && red < 0) return fail('紅線請輸入 0 以上的整數');
-    if (em && et < 1) return fail('緊急目標存量至少要 1');
-    if (em && (er < 0 || er >= et)) return fail('緊急紅線要小於目標存量（目前目標 ' + et + '）');
+    if (em && et < 1) return fail('緊急包的目標存量至少要 1');
+    if (em && (er < 0 || er >= et)) return fail('緊急包的紅線要小於目標存量（目前目標 ' + et + '）');
     if (k && !(aon > 0)) return fail('開封後期限請填 1 以上的數字，或改回「未設定」');
     if (warn !== null && warn < 0) return fail('提醒天數請輸入 0 以上的整數');
     var afterOpen = k ? { kind: k, n: aon, unit: aou } : null;
     var emergency = { enabled: em, target: em ? et : 0, redLine: em ? er : 0 };
     if (it){
-      if (!em && hasEm(it) && poolSum(it, 'emergency') > 0) return fail('緊急備品還有 ' + poolSum(it, 'emergency') + ' ' + it.unit + '，請先「調用到日常」或丟棄，才能取消緊急備品');
-      if (!daily && hasDaily(it) && (it.quantity || it.inUse || it.spare)) return fail('日常還有庫存，請先用完或盤點校正成 0，才能改成「只放在緊急包」');
+      if (!em && hasEm(it) && poolSum(it, 'emergency') > 0) return fail('緊急備品還有 ' + poolSum(it, 'emergency') + ' ' + it.unit + '，請先「調用到日常」或丟棄，才能把用途改成「日常用品」');
+      if (!daily && hasDaily(it) && (it.quantity || it.inUse || it.spare)) return fail('日常還有庫存，請先用完或盤點校正成 0，才能把用途改成「只放緊急包」');
       it.name = name; it.unit = unit; it.location = fLoc.value.trim(); it.categoryId = catEl.value;
       if (daily) it.redLine = red;
       it.daily = daily; it.emergency = emergency; it.afterOpen = afterOpen; it.warnDays = warn; it.updatedAt = now();
