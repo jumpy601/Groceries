@@ -219,6 +219,45 @@ button{cursor:pointer;touch-action:manipulation}
 .toast button.alt{background:#6B635B;color:#FFFDF9}
 .warn-banner{background:var(--red-bg);color:var(--red);border-radius:16px;padding:10px 14px;font-size:14px;margin:0 0 14px}
 
+/* ---------- 新手介紹（v1.7） ---------- */
+.head-r{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.help-btn{width:36px;height:36px;border-radius:50%;border:0;background:var(--soft);color:var(--ink2);display:inline-flex;align-items:center;justify-content:center}
+#tour{position:fixed;inset:0;z-index:60;background:var(--bg);display:flex;flex-direction:column;opacity:0;transition:opacity .2s}
+#tour.show{opacity:1}
+.tour-top{display:flex;justify-content:space-between;align-items:center;padding:calc(env(safe-area-inset-top) + 12px) 16px 0;max-width:560px;width:100%;margin:0 auto}
+.tour-step{color:var(--muted);font-size:14px}
+.tour-track{flex:1;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.tour-track::-webkit-scrollbar{display:none}
+.tour-slide{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 20px;overflow-y:auto}
+.tour-demo{width:100%;max-width:340px;min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;pointer-events:none;margin-bottom:22px}
+.tour-slide h2{font-weight:400;font-size:24px;margin:0 0 8px;text-align:center}
+.tour-slide p{margin:0;color:var(--ink2);font-size:16px;text-align:center;max-width:320px;line-height:1.6}
+.tour-bot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px calc(16px + env(safe-area-inset-bottom));max-width:560px;width:100%;margin:0 auto}
+.tour-bot .btn{min-width:104px}
+.tour-bot .btn[disabled]{visibility:hidden}
+.tour-dots{display:flex;gap:7px}
+.tour-dots i{width:8px;height:8px;border-radius:4px;background:#DCD3C6;transition:all .2s}
+.tour-dots i.on{width:22px;background:var(--primary)}
+.demo-card{width:100%;background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:14px 16px;text-align:left}
+.demo-card h3{margin:0 0 8px;font-weight:400;font-size:17px;display:flex;align-items:center;gap:8px}
+.demo-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0}
+.demo-row b{font-weight:400;font-size:26px;line-height:1}
+.demo-row small{color:var(--ink2);font-size:14px}
+.demo-acts{display:flex;gap:8px;margin-top:8px}
+.demo-acts .btn{flex:1;min-height:40px;font-size:14px;padding:0 8px}
+.demo-flow{display:flex;align-items:center;justify-content:center;gap:10px}
+.demo-flow .arrow{color:var(--muted)}
+.big-ic{width:68px;height:68px;border-radius:22px;display:flex;align-items:center;justify-content:center;position:relative}
+.big-ic .ic{width:36px;height:36px}
+.big-ic .badge{top:-6px;left:auto;right:-6px}
+.line-chip{background:#E2EFE0;color:#4E7A48;border-radius:14px;padding:8px 12px;font-size:14px;line-height:1.3;text-align:center}
+.tip-row{display:flex;align-items:center;gap:14px;width:100%;background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:12px 14px}
+.tip-row .big-ic{width:52px;height:52px;border-radius:16px;flex:0 0 auto}
+.tip-row .big-ic .ic{width:28px;height:28px}
+.tip-row b{font-weight:400;font-size:16px;display:block}
+.tip-row small{color:var(--ink2);font-size:13px}
+.art-row{display:flex;gap:10px;justify-content:center}
+
 /* ---------- v1.1：分類篩選、提示行、緊急備品 ---------- */
 .cat-chips{display:flex;gap:8px;margin:0 0 10px;overflow-x:auto;padding:2px 2px 4px;scrollbar-width:none}
 .cat-chips::-webkit-scrollbar{display:none}
@@ -304,7 +343,7 @@ button{cursor:pointer;touch-action:manipulation}
 
 <script>
 'use strict';
-var APP_VERSION = 'v1.6';
+var APP_VERSION = 'v1.7';
 var STORE_KEY = 'pantry.v1';
 var DAY = 86400000;
 
@@ -373,6 +412,10 @@ var ICONS = {
   cal: '<rect x="4" y="5.5" width="16" height="15" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/>',
   pkg: '<path d="M4 7.5L12 4l8 3.5v9L12 20l-8-3.5z"/><path d="M4 7.5l8 3.5 8-3.5M12 11v9"/>',
   bell: '<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
+  help: '<circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.6a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1.1.9-1.1 1.6v.4"/><path d="M12 16.8v.2"/>',
+  book: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8.5 7.5h7"/>',
+  close: '<path d="M6 6l12 12M18 6L6 18"/>',
+  arrow: '<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>',
   move: '<path d="M4 12h12"/><path d="M12 7l5 5-5 5"/><path d="M20 5v14"/>',
   box: '<rect x="4" y="7" width="16" height="13" rx="2"/><path d="M3 4h18v3H3zM10 11h4"/>'
 };
@@ -1362,7 +1405,7 @@ function passFilter(it){
 function renderHome(){
   var d = new Date(), all = activeItems().filter(hasDaily);
   if (ui.cat && !getCat(ui.cat)) ui.cat = null;
-  var html = '<header class="home-head"><div><p class="date">' + (d.getMonth() + 1) + '月' + d.getDate() + '日 星期' + WEEK[d.getDay()] + '</p><h1>我家的小倉庫</h1></div><span class="ver">' + APP_VERSION + '</span></header>';
+  var html = '<header class="home-head"><div><p class="date">' + (d.getMonth() + 1) + '月' + d.getDate() + '日 星期' + WEEK[d.getDay()] + '</p><h1>我家的小倉庫</h1></div><div class="head-r"><button class="help-btn" data-act="tour" aria-label="使用說明">' + ic('help') + '</button><span class="ver">' + APP_VERSION + '</span></div></header>';
   if (!all.length){
     return html + '<div class="empty">' + artSvg('box', 96) + '<h2>倉庫還是空的</h2><p>先新增一樣家裡常用的東西吧！<br>例如雞蛋、衛生紙、醬油。</p>' +
       '<button class="btn primary" data-act="nav" data-id="#/new">' + ic('plus') + '新增第一個物品</button>' +
@@ -1941,6 +1984,8 @@ function mountForm(editId){
 function renderSettings(){
   var cats = sortedCats(), s = db.settings;
   var html = '<header class="sub-head"><h1>設定</h1><span class="ver">' + APP_VERSION + '</span></header>';
+  html += '<section class="panel"><div class="set-row" style="padding:0"><span class="h-ic">' + ic('book', 'ic-sm') + '</span><div class="grow">使用說明<small>7 張圖卡介紹怎麼用</small></div>' +
+    '<button class="btn sm" data-act="tour">再看一次</button></div></section>';
   html += '<section class="panel"><h2>' + ic('list') + '分類</h2>' +
     cats.map(function(c, i){
       var n = activeItems().filter(function(it){ return it.categoryId === c.id; }).length;
@@ -2104,6 +2149,7 @@ document.addEventListener('click', function(e){
           text: '物品和它的 ' + itemLogs(id).length + ' 筆歷史紀錄都會刪除，無法復原。' },
           function(){ var nm = getItem(id).name; db.items = db.items.filter(function(x){ return x.id !== id; }); db.logs = db.logs.filter(function(l){ return l.itemId !== id; }); hideToast(); persist(); render(); showToast('已永久刪除「' + nm + '」', null, 2500); });
         break;
+      case 'tour': openTour(); break;
       case 'cat-edit': openCatEditor(id); break;
       case 'cat-up': moveCat(id, -1); break;
       case 'cat-down': moveCat(id, 1); break;
@@ -2116,7 +2162,80 @@ document.addEventListener('click', function(e){
   if (o && route().name !== 'item') go('#/item/' + encodeURIComponent(o.dataset.open));
 });
 document.querySelector('#sheet .sheet-bg').addEventListener('click', closeSheet);
-document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeSheet(); });
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape'){ if (document.getElementById('tour')) closeTour(); else closeSheet(); } });
+
+/* ================= 新手介紹 =================
+ * 圖卡上半部直接用 app 裡真的元件（燈號、按鈕、效期標籤、插圖），只能看不能按。
+ * 「看過了沒」記在這支手機（localStorage），不跟著資料走。 */
+var TOUR_KEY = 'pantry.tourSeen';
+function tourSeen(){ try { return localStorage.getItem(TOUR_KEY) === '1'; } catch (e) { return true; } }
+function markTourSeen(){ try { localStorage.setItem(TOUR_KEY, '1'); } catch (e) {} }
+function tourSlides(){
+  var d10 = ymd(now() + 10 * DAY), d120 = ymd(now() + 120 * DAY), d300 = ymd(now() + 300 * DAY);
+  function bigIc(name, bg, extra){ return '<span class="big-ic" style="background:' + bg + '">' + ic(name) + (extra || '') + '</span>'; }
+  return [
+    { title: '歡迎來到小倉庫', text: '家裡有什麼、什麼快沒了，打開就知道。',
+      demo: artSvg('box', 132) + '<div class="art-row">' + ['kitchen', 'bath', 'clean', 'fridge', 'food'].map(function(k, i){ return catArt({ art: k, color: ['peach', 'blue', 'mauve', 'mint', 'sand'][i] }, 34); }).join('') + '</div>' },
+    { title: '一眼看庫存', text: '數量 ≤ 紅線就亮紅燈，自動加進待買清單。',
+      demo: '<div class="demo-card"><h3>' + artSvg('egg', 26) + '雞蛋 <small style="color:var(--muted);font-size:13px">紅線 6</small></h3>' +
+        [[8, 'green', 'check'], [7, 'yellow', 'alert'], [6, 'red', 'cart']].map(function(x){
+          return '<div class="demo-row"><span style="display:flex;align-items:center;gap:10px;color:var(--' + x[1] + ')">' + ic(x[2]) + '<b style="color:var(--ink)">' + x[0] + '</b><small>顆</small></span>' + pill(x[1]) + '</div>';
+        }).join('') + '<div class="note-line bad" style="margin-top:4px">' + ic('cart') + '<span>6 顆以下自動加進待買清單</span></div></div>' },
+    { title: '兩種記錄方式', text: '一個一個用的按 −／＋；一瓶慢慢用的按開封、用完、補貨。',
+      demo: '<div class="demo-card"><h3>' + artSvg('egg', 24) + '雞蛋</h3><div class="demo-acts"><span class="btn b-minus">' + ic('minus') + '用掉</span><span class="btn b-plus">' + ic('plus') + '入庫</span></div></div>' +
+        '<div class="demo-card"><h3>' + artSvg('kitchen', 24) + '醬油 <span class="inuse on" style="font-size:13px"><span class="dot"></span>已開封 3 天</span></h3>' +
+        '<div class="demo-acts"><span class="btn b-open">' + ic('open') + '開封</span><span class="btn b-finish">' + ic('done') + '用完</span><span class="btn b-restock">' + ic('restock') + '補貨</span></div></div>' },
+    { title: '待買清單自動整理', text: '補到超過紅線才會移出。按「分享清單」就能傳到 LINE。',
+      demo: '<div class="demo-flow">' + bigIc('cart', 'var(--red-bg)', '<span class="badge">3</span>') + '<span class="arrow">' + ic('arrow') + '</span>' +
+        bigIc('share', 'var(--soft)') + '<span class="arrow">' + ic('arrow') + '</span><span class="line-chip">LINE<br>家庭群組</span></div>' +
+        '<div class="demo-card"><div class="demo-row"><span>雞蛋<br><span class="buy-need">' + ic('cart', 'ic-sm') + ' 至少補 1 顆</span></span><span class="btn sm b-restock">' + ic('check', 'ic-sm') + '已買到</span></div></div>' },
+    { title: '先用快到期的', text: '新增、補貨時可以順手填效期，用掉時會先扣最早到期的。',
+      demo: bigIc('cal', 'var(--yellow-bg)') + '<div class="demo-card">' + noteLine('warn', 'clock', '先用 <b>' + fmtYmd(d10) + '</b> 到期的 · 剩 10 天') +
+        '<div class="batch-chips"><span class="bchip warn">2 · ' + fmtYmd(d10) + '</span><span class="bchip">1 · ' + fmtYmd(d120) + '</span><span class="bchip">1 · ' + fmtYmd(d300) + '</span></div></div>' },
+    { title: '緊急備品另外記', text: '防災包的數量和日常分開算，快過期會提醒換新，每半年提醒檢查一次。',
+      demo: artSvg('kit', 110) + '<span class="em-line p-yellow">' + ic('sos') + '緊急 5／12 瓶 · 未達目標</span>' +
+        '<div class="demo-flow">' + bigIc('adjust', 'var(--soft)') + '<span class="line-chip" style="background:var(--soft);color:var(--ink2)">每 6 個月<br>檢查一次</span></div>' },
+    { title: '幾個小技巧', text: '之後可以從首頁右上角的「？」或設定再打開這份說明。',
+      demo: [['undo', 'var(--soft)', '按錯了？', '5 秒內按「復原」'], ['download', 'var(--green-bg)', '記得備份', '設定 → 匯出備份'], ['home', 'var(--yellow-bg)', '加到主畫面', '像 App 一樣打開'], ['help', 'var(--soft)', '忘了怎麼用', '按右上角的「？」']]
+        .map(function(x){ return '<div class="tip-row">' + bigIc(x[0], x[1]) + '<div><b>' + x[2] + '</b><small>' + x[3] + '</small></div></div>'; }).join('') }
+  ];
+}
+function openTour(){
+  if (document.getElementById('tour')) return;
+  closeSheet(); hideToast();
+  var slides = tourSlides(), n = slides.length, cur = 0;
+  var el = document.createElement('div');
+  el.id = 'tour'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', '使用說明');
+  el.innerHTML = '<div class="tour-top"><span class="tour-step" id="tour-step"></span><button class="icon-btn" id="tour-x" aria-label="關閉使用說明">' + ic('close') + '</button></div>' +
+    '<div class="tour-track" id="tour-track">' + slides.map(function(s, i){
+      return '<section class="tour-slide" aria-label="第 ' + (i + 1) + ' 張，共 ' + n + ' 張"><div class="tour-demo" aria-hidden="true">' + s.demo + '</div><h2>' + s.title + '</h2><p>' + s.text + '</p></section>';
+    }).join('') + '</div>' +
+    '<div class="tour-bot"><button class="btn ghost" id="tour-prev">上一張</button><div class="tour-dots">' + slides.map(function(){ return '<i></i>'; }).join('') + '</div><button class="btn primary" id="tour-next">下一張</button></div>';
+  document.body.appendChild(el);
+  requestAnimationFrame(function(){ el.classList.add('show'); });
+  var track = el.querySelector('#tour-track');
+  function sync(){
+    el.querySelector('#tour-step').textContent = (cur + 1) + ' / ' + n;
+    el.querySelectorAll('.tour-dots i').forEach(function(d, i){ d.classList.toggle('on', i === cur); });
+    el.querySelector('#tour-prev').disabled = cur === 0;
+    el.querySelector('#tour-next').innerHTML = cur === n - 1 ? ic('check') + '開始使用' : '下一張';
+  }
+  function goTo(i){ cur = Math.max(0, Math.min(n - 1, i)); track.scrollTo({ left: cur * track.clientWidth, behavior: 'smooth' }); sync(); }
+  track.addEventListener('scroll', function(){
+    var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+    if (i !== cur){ cur = Math.max(0, Math.min(n - 1, i)); sync(); }
+  }, { passive: true });
+  el.querySelector('#tour-x').onclick = closeTour;
+  el.querySelector('#tour-prev').onclick = function(){ goTo(cur - 1); };
+  el.querySelector('#tour-next').onclick = function(){ if (cur === n - 1) closeTour(); else goTo(cur + 1); };
+  sync();
+}
+function closeTour(){
+  markTourSeen();
+  var el = document.getElementById('tour'); if (!el) return;
+  el.classList.remove('show');
+  setTimeout(function(){ if (el.parentNode) el.parentNode.removeChild(el); }, 200);
+}
 
 /* ================= 啟動 ================= */
 document.querySelectorAll('[data-ic]').forEach(function(el){ el.innerHTML = ic(el.dataset.ic); });
@@ -2126,6 +2245,7 @@ var needSave = !loaded || loaded.version !== 2;
 db = normalizeDb(loaded);
 if (needSave) persist();
 render();
+if (!tourSeen()) openTour();
 if ('serviceWorker' in navigator && location.protocol === 'https:'){
   navigator.serviceWorker.register('sw.js').catch(function(){});
 }

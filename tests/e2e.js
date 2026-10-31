@@ -38,6 +38,39 @@ function ok(c, m){ if (c) console.log('  ✓ ' + m); else { fails++; console.log
   await E(() => { localStorage.clear(); }); await p.reload(); await sleep(200);
   ok((await p.textContent('.ver')).trim() === APP_VERSION_EXPECTED(), '版本號 ' + APP_VERSION_EXPECTED());
 
+  console.log('新手介紹（v1.7）');
+  ok(await p.isVisible('#tour'), '第一次打開自動出現新手介紹');
+  ok((await p.$$('.tour-slide')).length === 7, '一共 7 張圖卡');
+  ok((await p.textContent('#tour-step')).trim() === '1 / 7' && (await p.$eval('#tour-prev', b => getComputedStyle(b).visibility)) === 'hidden', '第 1 張：顯示 1 / 7，沒有「上一張」');
+  ok(await p.$$eval('.tour-demo', a => a.every(d => d.querySelectorAll('svg').length >= 2)), '每一張圖卡都有圖示（共 ' + (await p.$$('.tour-demo svg')).length + ' 個）');
+  ok(!(await p.$('.tour-demo [data-act], .tour-demo [data-open]')), '圖卡裡的按鈕只是示意，按了不會動到資料');
+  await p.screenshot({ path: path.join(OUT, 'tour-1.png') });
+  await p.click('#tour-next'); await sleep(500);
+  ok((await p.textContent('#tour-step')).trim() === '2 / 7' && (await p.$$eval('.tour-dots i.on', a => a.length)) === 1, '按「下一張」到第 2 張，圓點跟著移動');
+  await p.screenshot({ path: path.join(OUT, 'tour-2.png') });
+  await p.$eval('#tour-track', t => { t.scrollLeft = t.clientWidth * 2; }); await sleep(400);
+  ok((await p.textContent('#tour-step')).trim() === '3 / 7', '左右滑動也會換頁');
+  await p.screenshot({ path: path.join(OUT, 'tour-3.png') });
+  for (let i = 0; i < 4; i++){ await p.click('#tour-next'); await sleep(450); await p.screenshot({ path: path.join(OUT, 'tour-' + (i + 4) + '.png') }); }
+  ok((await p.textContent('#tour-step')).trim() === '7 / 7' && (await p.textContent('#tour-next')).includes('開始使用'), '最後一張的按鈕變成「開始使用」');
+  await p.click('#tour-next'); await sleep(350);
+  ok(!(await p.$('#tour')), '按「開始使用」關閉');
+  await p.reload(); await sleep(300);
+  ok(!(await p.$('#tour')), '看過之後重新打開不會再自動出現');
+  await p.click('.help-btn'); await sleep(300);
+  ok(await p.isVisible('#tour') && (await p.textContent('#tour-step')).trim() === '1 / 7', '首頁右上角「？」可以再打開，從第 1 張開始');
+  await p.click('#tour-x'); await sleep(300);
+  ok(!(await p.$('#tour')), '按 ✕ 關閉');
+  await p.goto(URL + '#/settings'); await sleep(200);
+  await p.click('[data-act=tour]'); await sleep(300);
+  ok(await p.isVisible('#tour'), '設定裡的「使用說明 → 再看一次」可以打開');
+  await p.keyboard.press('Escape'); await sleep(300);
+  ok(!(await p.$('#tour')), '按 Esc 也能關閉');
+  await E(() => localStorage.removeItem('pantry.tourSeen')); await p.reload(); await sleep(300);
+  await p.click('#tour-x'); await sleep(300);
+  await p.reload(); await sleep(300);
+  ok(!(await p.$('#tour')), '第一次就按 ✕ 關掉，之後也不會再自動出現');
+
   console.log('用途：三選一');
   await p.goto(URL + '#/new'); await sleep(150);
   ok(await p.isChecked('input[name=use][value=daily]'), '從「新增」進來，預設是「日常用品」');

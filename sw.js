@@ -1,5 +1,5 @@
 // 版本改了就會換掉舊快取；主程式每次都先試網路，離線時才用快取
-var CACHE = 'pantry-v1.6';
+var CACHE = 'pantry-v1.7';
 var SHELL = ['./', 'index.html', 'manifest.json', 'icon.svg', 'icon-180.png', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', function(e){
