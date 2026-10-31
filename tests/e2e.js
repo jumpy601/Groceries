@@ -90,6 +90,26 @@ function ok(c, m){ if (c) console.log('  ✓ ' + m); else { fails++; console.log
   await p.click('#item-form button[type=submit]'); await sleep(150);
   ok((await p.textContent('#f-err')).includes('緊急包的紅線要小於目標存量'), '紅線 ≥ 目標時提示錯誤');
 
+  console.log('分類插圖');
+  await p.goto(URL + '#/settings'); await sleep(150);
+  await p.click('[data-act=cat-edit]:not([data-id])'); await sleep(300);
+  ok((await p.$$('.art-opt')).length === 13, '插圖選單有 13 張');
+  ok(!!(await p.$('.art-opt[data-art=fridge][aria-label="冰箱"]')) && !!(await p.$('.art-opt[data-art=food][aria-label="罐頭零食"]')), '有冰箱、罐頭零食兩張新插圖');
+  const cols = await p.$eval('.art-grid', el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
+  ok(cols === 5, '插圖一排 5 張');
+  await p.screenshot({ path: path.join(OUT, 'art-picker.png') });
+  await p.fill('#ce-name', '測試-冰箱');
+  await p.click('.art-opt[data-art=fridge]'); await p.click('.sw[data-color=mint]');
+  await p.click('#sheet [data-ok]'); await sleep(300);
+  const fc = await E(() => db.categories.find(c => c.name === '測試-冰箱'));
+  ok(fc && fc.art === 'fridge' && fc.color === 'mint', '新分類存成冰箱插圖、薄荷底色');
+  await p.click('[data-act=cat-edit]:not([data-id])'); await sleep(300);
+  await p.fill('#ce-name', '測試-零食'); await p.click('.art-opt[data-art=food]');
+  await p.click('#sheet [data-ok]'); await sleep(300);
+  ok((await E(() => db.categories.find(c => c.name === '測試-零食').art)) === 'food', '新分類存成罐頭零食插圖');
+  await p.goto(URL); await sleep(150);
+  ok(!!(await p.$('.cchip:has-text("測試-冰箱") svg')), '首頁分類篩選顯示冰箱插圖');
+
   console.log('固定回歸');
   await p.goto(URL); await sleep(150);
   await p.click(`[data-act=consume][data-id="${egg}"]`); await sleep(100);
