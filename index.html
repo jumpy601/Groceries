@@ -66,7 +66,6 @@ button{cursor:pointer;touch-action:manipulation}
 .cat-art{width:46px;height:46px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
 .cat-head h2{margin:0;font-size:19px;font-weight:400}
 .cat-head .count{color:var(--muted);font-size:14px}
-.cat-empty{background:var(--card);border:1.5px dashed var(--line);border-radius:var(--radius);padding:14px 16px;color:var(--muted);font-size:14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
 
 /* ---------- 物品卡片 ---------- */
 .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 16px 14px;margin:0 0 12px;position:relative}
@@ -305,7 +304,7 @@ button{cursor:pointer;touch-action:manipulation}
 
 <script>
 'use strict';
-var APP_VERSION = 'v1.5';
+var APP_VERSION = 'v1.6';
 var STORE_KEY = 'pantry.v1';
 var DAY = 86400000;
 
@@ -1369,7 +1368,9 @@ function renderHome(){
       '<button class="btn primary" data-act="nav" data-id="#/new">' + ic('plus') + '新增第一個物品</button>' +
       (activeItems().length ? '<p style="margin:14px 0 0">只放緊急包的物品在「緊急」分頁。</p>' : '') + '</div>';
   }
-  var cats = sortedCats();
+  // 首頁只顯示有日常物品的分類；空分類在新增頁、設定裡照樣看得到
+  var cats = sortedCats().filter(function(c){ return all.some(function(it){ return it.categoryId === c.id; }); });
+  if (ui.cat && !cats.some(function(c){ return c.id === ui.cat; })) ui.cat = null;
   if (cats.length > 1){
     html += '<div class="cat-chips" role="group" aria-label="依分類篩選"><button class="cchip all' + (!ui.cat ? ' on' : '') + '" data-act="cat" data-id="">全部</button>' +
       cats.map(function(c){ return '<button class="cchip' + (ui.cat === c.id ? ' on' : '') + '" data-act="cat" data-id="' + esc(c.id) + '" aria-pressed="' + (ui.cat === c.id) + '">' + artSvg(c.art, 26) + esc(c.name) + '</button>'; }).join('') + '</div>';
@@ -1388,10 +1389,9 @@ function renderHome(){
   cats.forEach(function(cat){
     if (ui.cat && cat.id !== ui.cat) return;
     var list = all.filter(function(it){ return it.categoryId === cat.id && passFilter(it); }).sort(byStatusThenName);
-    if (ui.filter && !list.length) return;
+    if (!list.length) return;
     var total = all.filter(function(it){ return it.categoryId === cat.id; }).length;
     html += '<section class="cat-sec"><div class="cat-head">' + catArt(cat, 36) + '<h2>' + esc(cat.name) + '</h2><span class="count">' + total + ' 項</span></div>';
-    if (!list.length) html += '<div class="cat-empty"><span>這個分類還沒有物品</span><button class="btn sm" data-act="nav" data-id="#/new/' + esc(cat.id) + '">' + ic('plus', 'ic-sm') + '新增</button></div>';
     html += list.map(cardHtml).join('') + '</section>';
     shown += list.length;
   });

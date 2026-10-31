@@ -108,7 +108,7 @@ function ok(c, m){ if (c) console.log('  ✓ ' + m); else { fails++; console.log
   await p.click('#sheet [data-ok]'); await sleep(300);
   ok((await E(() => db.categories.find(c => c.name === '測試-零食').art)) === 'food', '新分類存成罐頭零食插圖');
   await p.goto(URL); await sleep(150);
-  ok(!!(await p.$('.cchip:has-text("測試-冰箱") svg')), '首頁分類篩選顯示冰箱插圖');
+  ok(!(await p.$('.cchip:has-text("測試-冰箱")')), '剛建立的空分類不出現在首頁篩選列（v1.6）');
 
   console.log('固定回歸');
   await p.goto(URL); await sleep(150);
@@ -218,6 +218,33 @@ function ok(c, m){ if (c) console.log('  ✓ ' + m); else { fails++; console.log
   await p.click('#sheet [data-ok]'); await sleep(250);
   rr = await E(id => batchesOf(getItem(id), 'daily').map(b => [b.qty, b.exp]), yog);
   ok(rr.length === 2 && rr[1][0] === 3 && rr[1][1] === d40, '補貨的 2 盒併入 ' + d40 + ' 那批（共 3 盒）');
+
+  console.log('首頁隱藏空分類（v1.6）');
+  await p.goto(URL); await sleep(200);
+  const heads = await p.$$eval('.cat-head h2', a => a.map(x => x.textContent));
+  ok(!heads.includes('清潔用品') && !heads.includes('測試-冰箱') && !heads.includes('測試-零食'), '沒有日常物品的分類不出現在首頁：' + heads.join('、'));
+  ok(!(await p.$('.cat-empty')) && !(await p.textContent('#view')).includes('這個分類還沒有物品'), '不再出現「這個分類還沒有物品」');
+  const chipNames = await p.$$eval('.cchip:not(.all)', a => a.map(x => x.textContent));
+  ok(chipNames.every(n => heads.includes(n)), '分類篩選列只列出首頁有的分類：' + chipNames.join('、'));
+  await E(() => { const r = db.items.find(i => i.name === '測試-乾燥飯'); r.categoryId = db.categories.find(c => c.name === '測試-零食').id; persist(); render(); }); await sleep(100);
+  ok(!(await p.$$eval('.cat-head h2', a => a.map(x => x.textContent))).includes('測試-零食'), '分類裡只有「只放緊急包」的物品，在首頁也算空的');
+  await p.goto(URL + '#/new'); await sleep(150);
+  const formCats = await p.$$eval('input[name=cat]', a => a.map(x => x.closest('label').textContent));
+  ok(['清潔用品', '測試-冰箱', '測試-零食'].every(n => formCats.includes(n)), '新增頁的分類選項仍有空分類：' + formCats.join('、'));
+  await p.goto(URL + '#/settings'); await sleep(150);
+  ok((await p.textContent('#view')).includes('測試-冰箱'), '設定的分類列表仍有空分類');
+  const fridgeId = await E(() => db.categories.find(c => c.name === '測試-冰箱').id);
+  await p.goto(URL + '#/new/' + fridgeId); await sleep(150);
+  ok(await p.isChecked(`input[name=cat][value="${fridgeId}"]`), '從空分類的網址進新增頁，分類已選好');
+  await p.fill('[name=f-name]', '測試-牛奶'); await p.fill('#f-qty', '2');
+  await p.click('#item-form button[type=submit]'); await sleep(250);
+  ok((await p.$$eval('.cat-head h2', a => a.map(x => x.textContent))).includes('測試-冰箱'), '放進物品後，分類出現在首頁');
+  ok(!!(await p.$('.cchip:has-text("測試-冰箱") svg')), '篩選列出現該分類（含冰箱插圖）');
+  await p.click('.cchip:has-text("測試-冰箱")'); await sleep(100);
+  const milk = await E(() => db.items.find(i => i.name === '測試-牛奶').id);
+  await E(id => { getItem(id).archived = true; persist(); render(); }, milk); await sleep(100);
+  ok(!(await p.$$eval('.cat-head h2', a => a.map(x => x.textContent))).includes('測試-冰箱'), '物品封存後，分類又從首頁消失');
+  ok(await E(() => ui.cat) === null && !!(await p.$('.cchip.all.on')), '正在篩選的分類變空時，自動回到「全部」');
 
   await p.goto(URL); await sleep(200); await shot('home');
   await p.goto(URL + '#/emergency'); await sleep(200); await shot('emergency');
